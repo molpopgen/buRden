@@ -1,8 +1,9 @@
 Package: buRden
-Title: What the package does (short line)
+Title: Performs "burden" tests of associations due to rare alleles
 Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
+Authors: "Kevin Thornton <krthornt@uci.edu> [aut, cre]"
+Maintainer: Kevin Thornton <krthornt@uci.edu> 
 Description: What the package does (paragraph)
 Depends: R (>= 3.1.0)
-License: What license is it under?
+License: GPL
 LazyData: true
