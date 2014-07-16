@@ -71,7 +71,7 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
 #' #filter out common alleles and marker pairs in high LD
 #' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 #' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
-#' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 10000 )
+#' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
 MB_perm <- function(ccdata, ccstatus, nperms) {
     .Call('buRden_MB_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms)
 }

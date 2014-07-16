@@ -13,7 +13,7 @@ using namespace std;
 //' #filter out common alleles and marker pairs in high LD
 //' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 //' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
-//' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 10000 )
+//' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
 // [[Rcpp::export]]
 DataFrame MB_perm( const IntegerMatrix & ccdata,
 		   const IntegerVector & ccstatus,

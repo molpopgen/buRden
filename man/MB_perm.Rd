@@ -14,6 +14,6 @@ status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #filter out common alleles and marker pairs in high LD
 keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
-mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 10000 )
+mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
 }
 
