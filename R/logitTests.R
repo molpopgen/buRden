@@ -55,7 +55,7 @@ logit.dominant=function(x,status)
 #' @examples
 #' data(rec.ccdata)
 #' #The function works on the genotype matrix
-#' #We assign discrete phenotypes based on number of controls & cases in ccblock.dsdata$genos:
+#' #We assign binary phenotypes based on number of controls & cases in ccblock.dsdata$genos:
 #' pvals.additive = ccpvals(rec.ccdata$genos,c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases)))
 #' pvals.recessive = ccpvals(rec.ccdata$genos,c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases)),"recessive")
 #' pvals.dominant = ccpvals(rec.ccdata$genos,c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases)),"dominant")

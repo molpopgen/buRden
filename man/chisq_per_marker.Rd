@@ -8,7 +8,7 @@ chisq_per_marker(ccdata, ccstatus)
 \arguments{
 \item{ccdata}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
 
-\item{ccstatus}{A vector of discrete phenotype labels.  0 = control, 1 = case.}
+\item{ccstatus}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 }
 \value{
 A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.

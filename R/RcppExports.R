@@ -3,7 +3,7 @@
 
 #' Single-marker association test based on the chi-squared statistic
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.
 #' @examples
 #' data(rec.ccdata)
@@ -16,7 +16,7 @@ chisq_per_marker <- function(ccdata, ccstatus) {
 
 #' Obtain permutaion distribution of the ESM_K statistic for case/control data
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
 #' @param k Number of markers to use for ESM_K statistic
 #' @return A vector of the permuted test statistic values
@@ -27,9 +27,9 @@ chisq_per_marker <- function(ccdata, ccstatus) {
 #' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 #' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
 #' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
-#' rec.ccdata.esm.permdist = esm_perm_discrete(rec.ccdata$genos[,which(keep==1)],status,100,50)
-esm_perm_discrete <- function(ccdata, ccstatus, nperms, k) {
-    .Call('buRden_esm_perm_discrete', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k)
+#' rec.ccdata.esm.permdist = esm_perm_binary(rec.ccdata$genos[,which(keep==1)],status,100,50)
+esm_perm_binary <- function(ccdata, ccstatus, nperms, k) {
+    .Call('buRden_esm_perm_binary', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k)
 }
 
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
@@ -50,7 +50,7 @@ esm <- function(scores, K) {
 
 #' Apply frequency and LD filters to a genotype matrix
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param minfreq A site with minor allele frequency < minfreq will not be kept.
 #' @param maxfreq A site with minor allele frequency > maxfreq will not be kept.
 #' @param rsq_cutoff  When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.

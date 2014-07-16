@@ -8,7 +8,7 @@ filter_sites(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff)
 \arguments{
 \item{ccdata}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
 
-\item{ccstatus}{A vector of discrete phenotype labels.  0 = control, 1 = case.}
+\item{ccstatus}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 
 \item{minfreq}{A site with minor allele frequency < minfreq will not be kept.}
 
