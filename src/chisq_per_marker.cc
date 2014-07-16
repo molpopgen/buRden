@@ -2,11 +2,6 @@
 
 #include <cstdlib>
 #include <cmath>
-#include <cassert>
-// #ifndef NDEBUG
-// #include <algorithm>
-// #endif
-//#include <gsl/gsl_cdf.h>
 
 #include <Rmath.h>
 
@@ -29,67 +24,48 @@ double get_log10_chisq(const unsigned ctable[4])
       return 0;
     }
   return ( -log10( R::pchisq( std::pow(10,rv), 1., 1, 0 )) );
-  //return( -log10(gsl_cdf_chisq_Q(pow(10,rv),1)) );  
 }
 
-// vector<double> chisq_per_marker( const CCblock * ccdata, 
-// 				 const vector<short> * keep, 
-// 				 const vector<short>  & ccstatus )
+//' Single-marker association test based on the chi-squared statistic
+//' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+//' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+//' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.
+// [[Rcpp::export]]
 NumericVector chisq_per_marker( const IntegerMatrix & ccdata,
 				const IntegerVector & ccstatus )
 {
-  //vector<double> csqs;
   NumericVector csqs;
-  //assert( count(ccstatus.begin(),ccstatus.end(),0) == ccdata->ncontrols );
-  //assert( count(ccstatus.begin(),ccstatus.end(),1) == ccdata->ncases );
-  //vector<short>::const_iterator kbegin = keep->begin();
   for(unsigned site = 0 ; site < ccdata.ncol() ; ++site)
     {
-      //if(*(kbegin+site))
-      //{
-	  unsigned ctable[4]; //minor in controls, minor in cases, major in controls, major in cases
-	  ctable[0]=ctable[1]=ctable[2]=ctable[3]=0;
-	  unsigned ind = 0;
+      unsigned ctable[4]; //minor in controls, minor in cases, major in controls, major in cases
+      ctable[0]=ctable[1]=ctable[2]=ctable[3]=0;
+      unsigned ind = 0;
 #ifndef NDEBUG
-	  unsigned STATUS_CHECK[2];
-	  STATUS_CHECK[0]=0;
-	  STATUS_CHECK[1]=0;
+      unsigned STATUS_CHECK[2];
+      STATUS_CHECK[0]=0;
+      STATUS_CHECK[1]=0;
 #endif
-	  for( ; ind < ccdata.nrow() ; ++ind )
+      for( ; ind < ccdata.nrow() ; ++ind )
+	{
+	  unsigned MINOR = (ccstatus[ind] == 0) ? 0 : 1;
+	  unsigned MAJOR = (ccstatus[ind] == 0) ? 2 : 3;
+	  switch( ccdata(ind,site) )
 	    {
-	      unsigned MINOR = (ccstatus[ind] == 0) ? 0 : 1;
-	      unsigned MAJOR = (ccstatus[ind] == 0) ? 2 : 3;
-#ifndef NDEBUG
-	      ++STATUS_CHECK[ ccstatus[ind] ] ;
-#endif
-	      //switch( ccdata->geno_matrix[site][ind] )
-	      switch( ccdata(ind,site) )
-		{
-		case 0: //homozygous major
-		  ctable[MAJOR]+=2;
-		  break;
-		case 1: //major/minor het
-		  ctable[MINOR]++;
-		  ctable[MAJOR]++;
-		  break;
-		case 2: //homozygous minor
-		  ctable[MINOR]+=2;
-		  break;
-		default:
-		  abort();
-		}
+	    case 0: //homozygous major
+	      ctable[MAJOR]+=2;
+	      break;
+	    case 1: //major/minor het
+	      ctable[MINOR]++;
+	      ctable[MAJOR]++;
+	      break;
+	    case 2: //homozygous minor
+	      ctable[MINOR]+=2;
+	      break;
+	    default:
+	      stop("chisq_per_marker error: genotype value other than 0, 1, or 2 was encountered!\n");
 	    }
-	  /*
-	  cerr << ind << ' ' << ctable[0]+ctable[2] << ' ' << 2*ccdata->ncontrols << ' '
-	       << ctable[1]+ctable[3] << ' ' << 2*ccdata->ncases << '\n';
-	  */
-	  /*
-	  assert( STATUS_CHECK[0] == ccdata->ncontrols );
-	  assert( STATUS_CHECK[1] == ccdata->ncases );
-	  assert( ctable[0]+ctable[2] == 2*ccdata->ncontrols );
-	  assert( ctable[1]+ctable[3] == 2*ccdata->ncases );
-	  */
-	  csqs.push_back( get_log10_chisq(ctable) );
+	}
+      csqs.push_back( get_log10_chisq(ctable) );
     }
   return csqs;
 }

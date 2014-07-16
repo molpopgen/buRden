@@ -3,8 +3,14 @@
 using namespace std;
 using namespace Rcpp;
 
-iterator_traits<NumericVector::const_iterator>::value_type ProductMoment( const NumericVector & x,
-									  const NumericVector & y )
+//' Pearson's product-moment correlation
+//' @param x A vector of values.
+//' @param y A vector of values.
+//' @return The correlation coefficient between x and y. This should/will be equal to R's cor(x,y).
+//' @note This implementation is based on a copy of [libsequence's](http://github.com/molpopgen/libsequence) template function object Sequence::ProductMoment in <Sequence/Correlations.hpp>
+// [[Rcpp::export]]
+std::iterator_traits<NumericVector::const_iterator>::value_type ProductMoment( const NumericVector & x,
+									       const NumericVector & y )
   {
     NumericVector::const_iterator beg_x = x.begin(),
       end_x = x.end(),
@@ -14,11 +20,11 @@ iterator_traits<NumericVector::const_iterator>::value_type ProductMoment( const 
     if (beg_x >= end_x) return std::numeric_limits<rtype>::min();
 
     unsigned nsam = 0;
-    rtype x_bar=rtype();
-    rtype y_bar=rtype();
-    rtype x_squared=rtype();
-    rtype y_squared=rtype();
-    rtype xy=rtype();
+    rtype x_bar=0.;
+    rtype y_bar=0.;
+    rtype x_squared=0.;
+    rtype y_squared=0.;
+    rtype xy=0.;
     
     for ( ; beg_x != end_x  ; ++beg_x,++beg_y)
       {

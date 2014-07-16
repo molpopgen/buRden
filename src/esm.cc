@@ -6,6 +6,12 @@
 using namespace std;
 using namespace Rcpp;
 
+//' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
+//' @param A vector of single-marker association test scores, on a -log10 scale
+//' @param K the number of markers used to calculate ESM_K
+//' @return The ESM_K test statistic value
+//' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
+// [[Rcpp::export]]
 double esm( const NumericVector & scores, const unsigned & K )
 {
   NumericVector s(scores);

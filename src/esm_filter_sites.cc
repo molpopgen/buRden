@@ -6,6 +6,15 @@
 using namespace std;
 using namespace Rcpp;
 
+//' Apply frequency and LD filters to a genotype matrix
+//' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+//' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+//' @param minfreq A site with minor allele frequency < minfreq will not be kept.
+//' @param maxfreq A site with minor allele frequency > maxfreq will not be kept.
+//' @param rsq_cutoff  When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.
+//' @return A vector of integers containing the values 0 (not kept) and 1 (kept).  The length of the vector is equal to the number of columns in ccdata.
+//' @details Regarding rsq_cutoff, when sites i and j are compared (j > i), site i will be kept and site j will not be kept.
+// [[Rcpp::export]]
 Rcpp::IntegerVector filter_sites(const Rcpp::IntegerMatrix & ccdata,
 				 const Rcpp::IntegerVector & ccstatus,
 				 const double & minfreq,
