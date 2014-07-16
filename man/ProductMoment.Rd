@@ -19,4 +19,11 @@ Pearson's product-moment correlation
 \note{
 This implementation is based on a copy of [libsequence's](http://github.com/molpopgen/libsequence) template function object Sequence::ProductMoment in <Sequence/Correlations.hpp>
 }
+\examples{
+x=rnorm(100)
+y=rnorm(100)
+xy.pm = ProductMoment(x,y)
+xy.cor = cor(x,y)
+print( xy.pm - xy.cor )
+}
 

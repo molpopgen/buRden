@@ -8,6 +8,12 @@ using namespace Rcpp;
 //' @param y A vector of values.
 //' @return The correlation coefficient between x and y. This should/will be equal to R's cor(x,y).
 //' @note This implementation is based on a copy of [libsequence's](http://github.com/molpopgen/libsequence) template function object Sequence::ProductMoment in <Sequence/Correlations.hpp>
+//' @examples
+//' x=rnorm(100)
+//' y=rnorm(100)
+//' xy.pm = ProductMoment(x,y)
+//' xy.cor = cor(x,y)
+//' print( xy.pm - xy.cor )
 // [[Rcpp::export]]
 std::iterator_traits<NumericVector::const_iterator>::value_type ProductMoment( const NumericVector & x,
 									       const NumericVector & y )

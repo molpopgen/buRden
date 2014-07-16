@@ -22,7 +22,7 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
 }
 
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
-#' @param A vector of single-marker association test scores, on a -log10 scale
+#' @param scores A vector of single-marker association test scores, on a -log10 scale
 #' @param K the number of markers used to calculate ESM_K
 #' @return The ESM_K test statistic value
 #' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
@@ -35,6 +35,12 @@ esm <- function(scores, K) {
 #' @param y A vector of values.
 #' @return The correlation coefficient between x and y. This should/will be equal to R's cor(x,y).
 #' @note This implementation is based on a copy of [libsequence's](http://github.com/molpopgen/libsequence) template function object Sequence::ProductMoment in <Sequence/Correlations.hpp>
+#' @examples
+#' x=rnorm(100)
+#' y=rnorm(100)
+#' xy.pm = ProductMoment(x,y)
+#' xy.cor = cor(x,y)
+#' print( xy.pm - xy.cor )
 ProductMoment <- function(x, y) {
     .Call('buRden_ProductMoment', PACKAGE = 'buRden', x, y)
 }

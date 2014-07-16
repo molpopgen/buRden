@@ -6,7 +6,7 @@
 esm(scores, K)
 }
 \arguments{
-\item{A}{vector of single-marker association test scores, on a -log10 scale}
+\item{scores}{A vector of single-marker association test scores, on a -log10 scale}
 
 \item{K}{the number of markers used to calculate ESM_K}
 }
