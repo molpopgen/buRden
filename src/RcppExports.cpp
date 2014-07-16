@@ -21,6 +21,24 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// esm_perm_discrete
+NumericVector esm_perm_discrete(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms, const unsigned& k);
+RcppExport SEXP buRden_esm_perm_discrete(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP, SEXP kSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP );
+        NumericVector __result = esm_perm_discrete(ccdata, ccstatus, nperms, k);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // esm
 double esm(const NumericVector& scores, const unsigned& K);
 RcppExport SEXP buRden_esm(SEXP scoresSEXP, SEXP KSEXP) {

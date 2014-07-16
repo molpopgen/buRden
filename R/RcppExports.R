@@ -14,6 +14,24 @@ chisq_per_marker <- function(ccdata, ccstatus) {
     .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
 }
 
+#' Obtain permutaion distribution of the ESM_K statistic for case/control data
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+#' @param nperms Number of permutations to perform
+#' @param k Number of markers to use for ESM_K statistic
+#' @return A vector of the permuted test statistic values
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
+#' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
+#' rec.ccdata.esm.permdist = esm_perm_discrete(rec.ccdata$genos[,which(keep==1)],status,100,50)
+esm_perm_discrete <- function(ccdata, ccstatus, nperms, k) {
+    .Call('buRden_esm_perm_discrete', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k)
+}
+
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
 #' @param scores A vector of single-marker association test scores, on a -log10 scale
 #' @param K the number of markers used to calculate ESM_K
