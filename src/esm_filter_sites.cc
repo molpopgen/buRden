@@ -1,19 +1,33 @@
 #include <esm_filter_sites.hpp>
-#include <Sequence/Correlations.hpp>
+#include <ProductMoment.hpp>
 #include <algorithm>
 #include <numeric>
 
 using namespace std;
-using namespace Sequence;
+using namespace Rcpp;
 
-vector<short> filter_sites(const CCblock & ccdata,const double & minfreq,const double & maxfreq, const double & rsq_cutoff)
+Rcpp::IntegerVector filter_sites(const Rcpp::IntegerMatrix & ccdata,
+				 const Rcpp::IntegerVector & ccstatus,
+				 const double & minfreq,
+				 const double & maxfreq,
+				 const double & rsq_cutoff)
 {
   //step 1, filter on frequency in controls
-  vector<short> keep(ccdata.SN+ccdata.SC,1);
-  
-  for( unsigned site_i = 0 ; site_i < ccdata.geno_matrix.size() - 1 ; ++site_i )
+  Rcpp::IntegerVector keep(ccstatus.size(),1);
+
+  unsigned ncontrols = count( ccstatus.begin(),ccstatus.end(),0 );
+  for( unsigned site_i = 0 ; site_i < ccdata.ncol() - 1 ; ++site_i )
     {
-      double maf_i = double(accumulate(ccdata.geno_matrix[site_i].begin(),ccdata.geno_matrix[site_i].begin()+ccdata.ncontrols,0))/(2.*double(ccdata.ncontrols));
+      double maf_i = 0;
+      for( unsigned i = 0 ; i < ccdata.nrow() ; ++i )
+	{
+	  if( ccstatus[i] == 0 )//is control
+	    {
+	      maf_i += double(ccdata(i,site_i));
+	    }
+	}
+      maf_i /= 2*double(ncontrols);
+
 
       if( maf_i < minfreq || maf_i > maxfreq )
 	{
@@ -21,17 +35,27 @@ vector<short> filter_sites(const CCblock & ccdata,const double & minfreq,const d
 	}
       if ( keep[site_i] )
 	{
-	  for( unsigned site_j = site_i+1 ; site_j < ccdata.geno_matrix.size()  ; ++site_j )  
+	  for( unsigned site_j = site_i+1 ; site_j < ccdata.ncol()  ; ++site_j )  
 	    {
-	      double maf_j = double(accumulate(ccdata.geno_matrix[site_j].begin(),ccdata.geno_matrix[site_j].begin()+ccdata.ncontrols,0))/(2.*double(ccdata.ncontrols));
+	      double maf_j=0;
+	      for( unsigned i = 0 ; i < ccdata.nrow() ; ++i )
+		{
+		  if( ccstatus[i] == 0 )//is control
+		    {
+		      maf_j += double(ccdata(i,site_j));
+		    }
+		}
+	      maf_j /= 2*double(ncontrols);
+
 	      if( maf_j < minfreq || maf_j > maxfreq )
 		{
 		  keep[site_j]=0;
 		}
 	      if ( keep[site_j] )
 		{
-		  double corr = ProductMoment()(ccdata.geno_matrix[site_i].begin(),ccdata.geno_matrix[site_i].end(),
-						ccdata.geno_matrix[site_j].begin());
+		  iterator_traits<NumericVector::const_iterator>::value_type corr = 
+		    ProductMoment( NumericVector( ccdata(_,site_i).begin(),ccdata(_,site_i).end() ),
+				   NumericVector( ccdata(_,site_j).begin(),ccdata(_,site_j).end() ) );
 		  if( corr > rsq_cutoff )
 		    {
 		      keep[site_j]=0;

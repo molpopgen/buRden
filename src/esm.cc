@@ -4,10 +4,13 @@
 #include <cmath>
 
 using namespace std;
+using namespace Rcpp;
 
-double esm( const vector<double> & scores, const unsigned & K )
+double esm( const NumericVector & scores, const unsigned & K )
 {
-  vector<double> s(scores);
+  //vector<double> s(scores);
+  NumericVector s(scores);
+
   sort(s.begin(),s.end(),greater<double>());
 
   unsigned ntests = scores.size();

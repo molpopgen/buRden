@@ -1,11 +1,12 @@
 #ifndef __ESM_FILTER_SITES_HPP__
 #define __ESM_FILTER_SITES_HPP__
 
-#include <readCC.hpp>
+#include <Rcpp.h>
 
-/*
-  Assumes the ccdata is read in with rotate = true (rows are sites, columns are individual
- */
-std::vector<short> filter_sites(const CCblock & ccdata,const double & minfreq,const double & maxfreq,const double & rsq_cutoff);
+Rcpp::IntegerVector filter_sites(const Rcpp::IntegerMatrix & ccdata,
+				 const Rcpp::IntegerVector & ccstatus,
+				 const double & minfreq,
+				 const double & maxfreq,
+				 const double & rsq_cutoff);
 
 #endif

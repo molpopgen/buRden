@@ -3,12 +3,15 @@
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
-#ifndef NDEBUG
-#include <algorithm>
-#endif
-#include <gsl/gsl_cdf.h>
+// #ifndef NDEBUG
+// #include <algorithm>
+// #endif
+//#include <gsl/gsl_cdf.h>
+
+#include <Rmath.h>
 
 using namespace std;
+using namespace Rcpp;
 
 double get_log10_chisq(const unsigned ctable[4])
 //returns -log10(p-value chisq w/Yate's correction with DF = 1)
@@ -25,21 +28,25 @@ double get_log10_chisq(const unsigned ctable[4])
       //then the chisquared is 0, the p-value is 1, and -log10(1) = 0 
       return 0;
     }
-  return( -log10(gsl_cdf_chisq_Q(pow(10,rv),1)) );  
+  return ( -log10( R::pchisq( std::pow(10,rv), 1., 1, 0 )) );
+  //return( -log10(gsl_cdf_chisq_Q(pow(10,rv),1)) );  
 }
 
-vector<double> chisq_per_marker( const CCblock * ccdata, 
-				 const vector<short> * keep, 
-				 const vector<short>  & ccstatus )
+// vector<double> chisq_per_marker( const CCblock * ccdata, 
+// 				 const vector<short> * keep, 
+// 				 const vector<short>  & ccstatus )
+NumericVector chisq_per_marker( const IntegerMatrix & ccdata,
+				const IntegerVector & ccstatus )
 {
-  vector<double> csqs;
-  assert( count(ccstatus.begin(),ccstatus.end(),0) == ccdata->ncontrols );
-  assert( count(ccstatus.begin(),ccstatus.end(),1) == ccdata->ncases );
-  vector<short>::const_iterator kbegin = keep->begin();
-  for(unsigned site = 0 ; site < ccdata->geno_matrix.size() ; ++site)
+  //vector<double> csqs;
+  NumericVector csqs;
+  //assert( count(ccstatus.begin(),ccstatus.end(),0) == ccdata->ncontrols );
+  //assert( count(ccstatus.begin(),ccstatus.end(),1) == ccdata->ncases );
+  //vector<short>::const_iterator kbegin = keep->begin();
+  for(unsigned site = 0 ; site < ccdata.ncol() ; ++site)
     {
-      if(*(kbegin+site))
-	{
+      //if(*(kbegin+site))
+      //{
 	  unsigned ctable[4]; //minor in controls, minor in cases, major in controls, major in cases
 	  ctable[0]=ctable[1]=ctable[2]=ctable[3]=0;
 	  unsigned ind = 0;
@@ -48,14 +55,15 @@ vector<double> chisq_per_marker( const CCblock * ccdata,
 	  STATUS_CHECK[0]=0;
 	  STATUS_CHECK[1]=0;
 #endif
-	  for( ; ind < ccdata->ncontrols + ccdata->ncases ; ++ind )
+	  for( ; ind < ccdata.nrow() ; ++ind )
 	    {
 	      unsigned MINOR = (ccstatus[ind] == 0) ? 0 : 1;
 	      unsigned MAJOR = (ccstatus[ind] == 0) ? 2 : 3;
 #ifndef NDEBUG
 	      ++STATUS_CHECK[ ccstatus[ind] ] ;
 #endif
-	      switch( ccdata->geno_matrix[site][ind] )
+	      //switch( ccdata->geno_matrix[site][ind] )
+	      switch( ccdata(ind,site) )
 		{
 		case 0: //homozygous major
 		  ctable[MAJOR]+=2;
@@ -75,12 +83,13 @@ vector<double> chisq_per_marker( const CCblock * ccdata,
 	  cerr << ind << ' ' << ctable[0]+ctable[2] << ' ' << 2*ccdata->ncontrols << ' '
 	       << ctable[1]+ctable[3] << ' ' << 2*ccdata->ncases << '\n';
 	  */
+	  /*
 	  assert( STATUS_CHECK[0] == ccdata->ncontrols );
 	  assert( STATUS_CHECK[1] == ccdata->ncases );
 	  assert( ctable[0]+ctable[2] == 2*ccdata->ncontrols );
 	  assert( ctable[1]+ctable[3] == 2*ccdata->ncases );
+	  */
 	  csqs.push_back( get_log10_chisq(ctable) );
-	}
     }
   return csqs;
 }
