@@ -1,5 +1,5 @@
-#ifndef __ESM_FILTER_SITES_HPP__
-#define __ESM_FILTER_SITES_HPP__
+#ifndef __FILTER_SITES_HPP__
+#define __FILTER_SITES_HPP__
 
 #include <Rcpp.h>
 

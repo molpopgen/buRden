@@ -19,4 +19,12 @@ Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
 \note{
 See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
 }
+\examples{
+data(rec.ccdata)
+status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#filter out common alleles and marker pairs in high LD
+keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
+rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
+}
 

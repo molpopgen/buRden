@@ -25,4 +25,9 @@ Apply frequency and LD filters to a genotype matrix
 \details{
 Regarding rsq_cutoff, when sites i and j are compared (j > i), site i will be kept and site j will not be kept.
 }
+\examples{
+data(rec.ccdata)
+status=c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+keep=filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+}
 

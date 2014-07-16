@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <cmath>
-
 #include <Rmath.h>
 
 using namespace std;
@@ -23,13 +22,18 @@ double get_log10_chisq(const unsigned ctable[4])
       //then the chisquared is 0, the p-value is 1, and -log10(1) = 0 
       return 0;
     }
-  return ( -log10( R::pchisq( std::pow(10,rv), 1., 1, 0 )) );
+  return ( -log10( R::pchisq( std::pow(10,rv), 1., 0, 0 )) );
 }
 
 //' Single-marker association test based on the chi-squared statistic
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 //' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
-//' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.
+//' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.
+//' @examples
+//' data(rec.ccdata)
+//' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+//' #Note that the result should be very very similar to logistic regression under additive model...
+//' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos, status)
 // [[Rcpp::export]]
 NumericVector chisq_per_marker( const IntegerMatrix & ccdata,
 				const IntegerVector & ccstatus )

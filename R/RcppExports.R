@@ -4,9 +4,30 @@
 #' Single-marker association test based on the chi-squared statistic
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
-#' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.
+#' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #Note that the result should be very very similar to logistic regression under additive model...
+#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos, status)
 chisq_per_marker <- function(ccdata, ccstatus) {
     .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
+}
+
+#' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
+#' @param scores A vector of single-marker association test scores, on a -log10 scale
+#' @param K the number of markers used to calculate ESM_K
+#' @return The ESM_K test statistic value
+#' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
+#' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
+esm <- function(scores, K) {
+    .Call('buRden_esm', PACKAGE = 'buRden', scores, K)
 }
 
 #' Apply frequency and LD filters to a genotype matrix
@@ -17,17 +38,12 @@ chisq_per_marker <- function(ccdata, ccstatus) {
 #' @param rsq_cutoff  When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.
 #' @return A vector of integers containing the values 0 (not kept) and 1 (kept).  The length of the vector is equal to the number of columns in ccdata.
 #' @details Regarding rsq_cutoff, when sites i and j are compared (j > i), site i will be kept and site j will not be kept.
+#' @examples
+#' data(rec.ccdata)
+#' status=c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' keep=filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
     .Call('buRden_filter_sites', PACKAGE = 'buRden', ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff)
-}
-
-#' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
-#' @param scores A vector of single-marker association test scores, on a -log10 scale
-#' @param K the number of markers used to calculate ESM_K
-#' @return The ESM_K test statistic value
-#' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
-esm <- function(scores, K) {
-    .Call('buRden_esm', PACKAGE = 'buRden', scores, K)
 }
 
 #' Pearson's product-moment correlation

@@ -21,6 +21,22 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// esm
+double esm(const NumericVector& scores, const unsigned& K);
+RcppExport SEXP buRden_esm(SEXP scoresSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const NumericVector& >::type scores(scoresSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP );
+        double __result = esm(scores, K);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // filter_sites
 Rcpp::IntegerVector filter_sites(const Rcpp::IntegerMatrix& ccdata, const Rcpp::IntegerVector& ccstatus, const double& minfreq, const double& maxfreq, const double& rsq_cutoff);
 RcppExport SEXP buRden_filter_sites(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP minfreqSEXP, SEXP maxfreqSEXP, SEXP rsq_cutoffSEXP) {
@@ -34,22 +50,6 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const double& >::type maxfreq(maxfreqSEXP );
         Rcpp::traits::input_parameter< const double& >::type rsq_cutoff(rsq_cutoffSEXP );
         Rcpp::IntegerVector __result = filter_sites(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// esm
-double esm(const NumericVector& scores, const unsigned& K);
-RcppExport SEXP buRden_esm(SEXP scoresSEXP, SEXP KSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< const NumericVector& >::type scores(scoresSEXP );
-        Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP );
-        double __result = esm(scores, K);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
