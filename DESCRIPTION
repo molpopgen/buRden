@@ -1,7 +1,7 @@
 Package: buRden
 Title: Performs "burden" tests of associations due to rare alleles
 Version: 0.1
-Authors: "Kevin Thornton <krthornt@uci.edu> [aut, cre]"
+Author: "Kevin Thornton <krthornt@uci.edu> [aut, cre]"
 Maintainer: Kevin Thornton <krthornt@uci.edu>
 Description: What the package does (paragraph)
 Depends:
