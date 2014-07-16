@@ -1,6 +1,6 @@
 #include <esm.hpp>
 #include <chisq_per_marker.hpp>
-
+#include <randWrapper.hpp>
 #include <functional>
 #include <utility>
 #include <algorithm>
@@ -8,8 +8,6 @@
 using namespace Rcpp;
 using namespace R;
 using namespace std;
-
-inline int randWrapper(const int n) { return floor(R::runif(0.,1.)*n); }
 
 //' Obtain permutaion distribution of the ESM_K statistic for case/control data
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.

@@ -64,6 +64,41 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
     .Call('buRden_filter_sites', PACKAGE = 'buRden', ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff)
 }
 
+#' Get permutation distribution of Madsen-Browning test statistics
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
+#' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 10000 )
+MB_perm <- function(ccdata, ccstatus, nperms) {
+    .Call('buRden_MB_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms)
+}
+
+#' Calculate Madsen-Browning weights.
+#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @return An array of weights, one for each column in data.
+#' @details Calculation is done under the "general genetic model" defined in Madsen and Browning.
+MBweights <- function(data, status) {
+    .Call('buRden_MBweights', PACKAGE = 'buRden', data, status)
+}
+
+#' Madsen-Browning test statistics
+#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @return The M-B test statistic for the "general genetic", "recessive", and "dominant" models.
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
+MBstat <- function(data, status) {
+    .Call('buRden_MBstat', PACKAGE = 'buRden', data, status)
+}
+
 #' Pearson's product-moment correlation
 #' @param x A vector of values.
 #' @param y A vector of values.

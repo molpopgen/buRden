@@ -74,6 +74,55 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// MB_perm
+DataFrame MB_perm(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms);
+RcppExport SEXP buRden_MB_perm(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        DataFrame __result = MB_perm(ccdata, ccstatus, nperms);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// MBweights
+NumericVector MBweights(const IntegerMatrix& data, const IntegerVector& status);
+RcppExport SEXP buRden_MBweights(SEXP dataSEXP, SEXP statusSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        NumericVector __result = MBweights(data, status);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// MBstat
+Rcpp::List MBstat(const IntegerMatrix& data, const IntegerVector& status);
+RcppExport SEXP buRden_MBstat(SEXP dataSEXP, SEXP statusSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        Rcpp::List __result = MBstat(data, status);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // ProductMoment
 std::iterator_traits<NumericVector::const_iterator>::value_type ProductMoment(const NumericVector& x, const NumericVector& y);
 RcppExport SEXP buRden_ProductMoment(SEXP xSEXP, SEXP ySEXP) {
