@@ -25,7 +25,7 @@ NULL
 #' @title Effect sizes for example data
 #' @name rec.esizes
 #' @docType data
-#' @format The effect size block corresponding to rec.ccdata.  The format is a matrix of 4 columns, and there is one row for each mutation in the entire population. (In other words, nrow(rec.esize) > ncol(rec.ccdata$genos).  The columns are:\cr
+#' @format The effect size block corresponding to rec.ccdata.  The format is a matrix of 4 columns, and there is one row for each mutation in the entire population. (In other words, nrow(rec.esize) > ncol(rec.ccdata$genos)).  The columns are:\cr
 #' mutation positions\cr
 #' mutation effect sizes\cr
 #' Number of occurrences of each mutation in the population.  The population size was 2e4 diploids, meaning that the mutation frequency is the value in the matrix divided by 4e4\cr
