@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 //' Apply frequency and LD filters to a genotype matrix
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-//' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+//' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param minfreq A site with minor allele frequency < minfreq will not be kept.
 //' @param maxfreq A site with minor allele frequency > maxfreq will not be kept.
 //' @param rsq_cutoff  When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.

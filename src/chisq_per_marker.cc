@@ -27,7 +27,7 @@ double get_log10_chisq(const unsigned ctable[4])
 
 //' Single-marker association test based on the chi-squared statistic
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-//' @param ccstatus A vector of discrete phenotype labels.  0 = control, 1 = case.
+//' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.
 //' @examples
 //' data(rec.ccdata)
