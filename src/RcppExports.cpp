@@ -21,6 +21,23 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// cAlpha_perm
+NumericVector cAlpha_perm(const IntegerMatrix& data, const IntegerVector& status, const unsigned& nperms);
+RcppExport SEXP buRden_cAlpha_perm(SEXP dataSEXP, SEXP statusSEXP, SEXP npermsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        NumericVector __result = cAlpha_perm(data, status, nperms);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // chisq_per_marker
 NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
 RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {

@@ -4,12 +4,31 @@
 #' The c-alpha statistic
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @return The c-alpha test statistic
 #' @examples
 #' data(rec.ccdata)
 #' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
-#' rec.ccdata.calpha = cAlpha(rec.ccdata$genos,status)
+#' #get minor allele freqs in 
+#' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
+#' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 cAlpha <- function(data, status) {
     .Call('buRden_cAlpha', PACKAGE = 'buRden', data, status)
+}
+
+#' Permutation distribution of the c-alpha statistic
+#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param nperms The number of permutations to perform
+#' @return The distribution of the test statistic after nperms swapping of case/control labels
+#' @examples
+#' data(rec.ccdata)
+#' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
+#' #get minor allele freqs in 
+#' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
+#' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
+#' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
+cAlpha_perm <- function(data, status, nperms) {
+    .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', data, status, nperms)
 }
 
 #' Single-marker association test based on the chi-squared statistic
