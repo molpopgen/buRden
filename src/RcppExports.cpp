@@ -5,6 +5,22 @@
 
 using namespace Rcpp;
 
+// cAlpha
+double cAlpha(const IntegerMatrix& data, const IntegerVector& status);
+RcppExport SEXP buRden_cAlpha(SEXP dataSEXP, SEXP statusSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        double __result = cAlpha(data, status);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // chisq_per_marker
 NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
 RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {
