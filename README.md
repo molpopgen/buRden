@@ -11,6 +11,8 @@ git clone https://github.com/molpopgen/buRden
 1. [R](http://r-project.org) v3.1.0 or greater
 2. [Rcpp](http://cran.r-project.org/web/packages/Rcpp/index.html)  v0.11.1 or greater
 
+The package has been tested with various version of [GCC](http://gcc.gnu.org) (all versions 4.6.4 or greater) and [clang](http://clang.llvm.org/) (version clang-503.0.38) on OS X Mavericks.
+
 ##Installation
 
 ```
