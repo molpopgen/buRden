@@ -24,8 +24,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // cAlpha_perm
-NumericVector cAlpha_perm(const IntegerMatrix& data, const IntegerVector& status, const unsigned& nperms);
-RcppExport SEXP buRden_cAlpha_perm(SEXP dataSEXP, SEXP statusSEXP, SEXP npermsSEXP) {
+NumericVector cAlpha_perm(const IntegerMatrix& data, const IntegerVector& status, const unsigned& nperms, const bool& simplecounts = false);
+RcppExport SEXP buRden_cAlpha_perm(SEXP dataSEXP, SEXP statusSEXP, SEXP npermsSEXP, SEXP simplecountsSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -33,7 +33,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
         Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
         Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
-        NumericVector __result = cAlpha_perm(data, status, nperms);
+        Rcpp::traits::input_parameter< const bool& >::type simplecounts(simplecountsSEXP );
+        NumericVector __result = cAlpha_perm(data, status, nperms, simplecounts);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
@@ -57,7 +58,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // esm_chisq
-NumericVector esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k);
+double esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k);
 RcppExport SEXP buRden_esm_chisq(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -66,7 +67,7 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
         Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
         Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP );
-        NumericVector __result = esm_chisq(ccdata, ccstatus, k);
+        double __result = esm_chisq(ccdata, ccstatus, k);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

@@ -3,7 +3,7 @@
 \alias{cAlpha_perm}
 \title{Permutation distribution of the c-alpha statistic}
 \usage{
-cAlpha_perm(data, status, nperms)
+cAlpha_perm(data, status, nperms, simplecounts = FALSE)
 }
 \arguments{
 \item{data}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
@@ -11,12 +11,20 @@ cAlpha_perm(data, status, nperms)
 \item{status}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 
 \item{nperms}{The number of permutations to perform}
+
+\item{simplecounts}{See Details.}
 }
 \value{
 The distribution of the test statistic after nperms swapping of case/control labels
 }
 \description{
 Permutation distribution of the c-alpha statistic
+}
+\details{
+When simplecounts = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+The latter method is used by the R package AssotesteR.
 }
 \examples{
 data(rec.ccdata)
@@ -25,5 +33,8 @@ status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
 rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status,100)
+}
+\references{
+Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 }
 

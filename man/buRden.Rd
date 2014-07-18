@@ -7,6 +7,19 @@
 \description{
 An Rcpp package for performing "burden" tests of associations due to rare variants by permutation.
 }
+\examples{
+#Quick-start:
+data(rec.ccdata)
+#Generate control/case status vector
+rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
+rec.ccdata.keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
+#Get stat + permutation p-values
+NPERMS=1e2
+rec.ccdata.calpha = calpha.p.perm(rec.ccdata$genos[,which(rec.ccdata.keep==1)],rec.ccdata.status,NPERMS )
+rec.ccdata.MB= MB.p.perm(rec.ccdata$genos[,which(rec.ccdata.keep==1)],rec.ccdata.status,NPERMS)
+rec.ccdata.esm = esm.p.perm(rec.ccdata$genos[,which(rec.ccdata.keep==1)],rec.ccdata.status,NPERMS,50)
+}
 \author{
 Kevin R. Thornton \email{krthornt@uci.edu}
 }
