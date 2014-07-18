@@ -56,6 +56,23 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// esm_chisq
+NumericVector esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k);
+RcppExport SEXP buRden_esm_chisq(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP kSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP );
+        NumericVector __result = esm_chisq(ccdata, ccstatus, k);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // esm_perm_binary
 NumericVector esm_perm_binary(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms, const unsigned& k);
 RcppExport SEXP buRden_esm_perm_binary(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP, SEXP kSEXP) {
