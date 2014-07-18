@@ -5,6 +5,41 @@
 
 using namespace Rcpp;
 
+// cAlpha
+double cAlpha(const IntegerMatrix& data, const IntegerVector& status, const bool& normalize = false, const bool& simplecounts = false);
+RcppExport SEXP buRden_cAlpha(SEXP dataSEXP, SEXP statusSEXP, SEXP normalizeSEXP, SEXP simplecountsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type normalize(normalizeSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type simplecounts(simplecountsSEXP );
+        double __result = cAlpha(data, status, normalize, simplecounts);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// cAlpha_perm
+NumericVector cAlpha_perm(const IntegerMatrix& data, const IntegerVector& status, const unsigned& nperms);
+RcppExport SEXP buRden_cAlpha_perm(SEXP dataSEXP, SEXP statusSEXP, SEXP npermsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        NumericVector __result = cAlpha_perm(data, status, nperms);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // chisq_per_marker
 NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
 RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {
@@ -68,6 +103,55 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const double& >::type maxfreq(maxfreqSEXP );
         Rcpp::traits::input_parameter< const double& >::type rsq_cutoff(rsq_cutoffSEXP );
         Rcpp::IntegerVector __result = filter_sites(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// MB_perm
+DataFrame MB_perm(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms);
+RcppExport SEXP buRden_MB_perm(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        DataFrame __result = MB_perm(ccdata, ccstatus, nperms);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// MBweights
+NumericVector MBweights(const IntegerMatrix& data, const IntegerVector& status);
+RcppExport SEXP buRden_MBweights(SEXP dataSEXP, SEXP statusSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        NumericVector __result = MBweights(data, status);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// MBstat
+Rcpp::List MBstat(const IntegerMatrix& data, const IntegerVector& status);
+RcppExport SEXP buRden_MBstat(SEXP dataSEXP, SEXP statusSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
+        Rcpp::List __result = MBstat(data, status);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

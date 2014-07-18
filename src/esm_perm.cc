@@ -1,6 +1,6 @@
 #include <esm.hpp>
 #include <chisq_per_marker.hpp>
-
+#include <randWrapper.hpp>
 #include <functional>
 #include <utility>
 #include <algorithm>
@@ -9,14 +9,13 @@ using namespace Rcpp;
 using namespace R;
 using namespace std;
 
-inline int randWrapper(const int n) { return floor(R::runif(0.,1.)*n); }
-
 //' Obtain permutaion distribution of the ESM_K statistic for case/control data
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param nperms Number of permutations to perform
 //' @param k Number of markers to use for ESM_K statistic
 //' @return A vector of the permuted test statistic values
+//' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 //' @examples
 //' data(rec.ccdata)
 //' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))

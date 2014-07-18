@@ -10,7 +10,7 @@ using namespace Rcpp;
 //' @param scores A vector of single-marker association test scores, on a -log10 scale
 //' @param K the number of markers used to calculate ESM_K
 //' @return The ESM_K test statistic value
-//' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
+//' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 //' @examples
 //' data(rec.ccdata)
 //' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))

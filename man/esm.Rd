@@ -16,9 +16,6 @@ The ESM_K test statistic value
 \description{
 Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
 }
-\note{
-See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
-}
 \examples{
 data(rec.ccdata)
 status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
@@ -26,5 +23,8 @@ status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
 rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
+}
+\references{
+Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 }
 
