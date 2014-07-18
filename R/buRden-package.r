@@ -2,6 +2,9 @@
 #'
 #' @name buRden
 #' @docType package
+#' @description An Rcpp package for performing "burden" tests of associations due to rare variants by permutation.
+#' @author Kevin R. Thornton \email{krthornt@@uci.edu}
+#' @references \url{https://github.com/molpopgen/buRden}
 #' @useDynLib buRden, .registration=TRUE
 #' @exportPattern "^[[:alpha:]]+"
 #' @importFrom Rcpp evalCpp loadModule Module
