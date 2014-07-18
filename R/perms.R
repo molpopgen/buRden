@@ -3,7 +3,7 @@
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
 #' @param k Number of markers to use for ESM_K statistic
-#' @return Monte-carlo estimate of P(perm stat >= observed data)
+#' @return The test statistic, Monte-carlo estimate of P(perm stat >= observed data), and a Z-score based on the permutation distribution.
 #' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
 #' data(rec.ccdata)
@@ -14,8 +14,11 @@
 esm.p.perm = function( ccdata, ccstatus, nperms, k )
   {
     stat = esm_chisq(ccdata,ccstatus,k)
+    perms = esm_perm_binary(ccdata,ccstatus,nperms,k)
     return( list("statistic" = stat,
-                 "p.value" = length( which( esm_perm_binary(ccdata,ccstatus,nperms,k)  >= stat) )/nperms ) )
+                 "p.value" = length( which( perms  >= stat) )/nperms,
+                 "z" = ( stat - mean(perms) )/sd(perms) )
+           )
   }
 
 #' Estimate c-alpha p-value by permutation
@@ -23,7 +26,7 @@ esm.p.perm = function( ccdata, ccstatus, nperms, k )
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
 #' @param simple.counts See Details.
-#' @return Monte-carlo estimate of P(perm stat >= observed data)
+#' @return The test statistic, Monte-carlo estimate of P(perm stat >= observed data), and a Z-score based on the permutation distribution.
 #' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 #' @details  When simplecounts = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
 #' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
@@ -38,15 +41,18 @@ esm.p.perm = function( ccdata, ccstatus, nperms, k )
 calpha.p.perm = function( ccdata, ccstatus, nperms, simple.counts = FALSE )
   {
     stat = cAlpha(ccdata,ccstatus,simple.counts)
+    perms = cAlpha_perm(ccdata,ccstatus,nperms,simple.counts)
     return( list("statistic" = stat,
-                 "p.values"=length( which( cAlpha_perm(ccdata,ccstatus,nperms,simple.counts)  >= stat ) )/nperms ) )
+                 "p.values"=length( which( perms >= stat ) )/nperms,
+                 "z" = (stat-mean(perms))/sd(perms))
+           )
   }
 
 #' Estimate Madsen-Brownin p-value by permutation
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
-#' @return A list of p-values, one for each of the three models
+#' @return A list of statistics, p-values, and Z-scores, one for each of the three models
 #' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 #' @examples
 #' data(rec.ccdata)
@@ -63,6 +69,11 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
                  "stat.dominant" = stats$dominant,
                  "p.value.general" = length(which(perms$general >= stats$general))/nperms,
                  "p.value.recessive" = length(which(perms$recessive >= stats$recessive))/nperms,
-                 "p.value.dominant" = length(which(perms$dominant >= stats$dominant))/nperms) )
+                 "p.value.dominant" = length(which(perms$dominant >= stats$dominant))/nperms,
+                 "z.general" = (stats$general - mean(perms$general))/sd(perms$general),
+                 "z.recessive" = (stats$recessive - mean(perms$recessive))/sd(perms$recessive),
+                 "z.dominant" = (stats$dominant - mean(perms$dominant))/sd(perms$dominant)
+                 )
+           )
                  
   }
