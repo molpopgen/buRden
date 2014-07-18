@@ -30,7 +30,7 @@ NumericVector MBweights(const IntegerMatrix & data,
 	    }
 	}
       double qi = double(minor_count + 1)/(2.*double(ncontrols)+2.);
-      rv[site] = sqrt(double(ncontrols)*qi*(1.-qi) );
+      rv[site] = sqrt(double(data.nrow())*qi*(1.-qi) );
     }
   return rv;
 }
@@ -108,11 +108,11 @@ Rcpp::List MBstat( const IntegerMatrix & data,
 	qi_dom = double(dom_count + 1)/(2.*double(ncontrols)+2.);
   
       transform( scores_site.begin(),scores_site.begin(),scores_site.begin(),
-		 bind2nd( divides<double>(), qi ) );
+		 bind2nd( divides<double>(), sqrt(double(data.nrow())*qi*(1.-qi))) );
       transform( scores_rec_site.begin(),scores_rec_site.begin(),scores_rec_site.begin(),
-		 bind2nd( divides<double>(), qi_rec ) );
+		 bind2nd( divides<double>(), sqrt(double(data.nrow())*qi_rec*(1.-qi_rec))) );
       transform( scores_dom_site.begin(),scores_dom_site.begin(),scores_dom_site.begin(),
-		 bind2nd( divides<double>(), qi_dom ) );
+		 bind2nd( divides<double>(), sqrt(double(data.nrow())*qi_dom*(1.-qi_dom))) );
   
       scores += scores_site;
       scores_rec += scores_rec_site;
