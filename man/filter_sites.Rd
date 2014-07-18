@@ -12,7 +12,7 @@ filter_sites(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff)
 
 \item{minfreq}{A site with minor allele frequency < minfreq will not be kept.}
 
-\item{maxfreq}{A site with minor allele frequency > maxfreq will not be kept.}
+\item{maxfreq}{A site with minor allele frequency >= maxfreq will not be kept.}
 
 \item{rsq_cutoff}{When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.}
 }

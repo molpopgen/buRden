@@ -26,7 +26,13 @@ cAlpha <- function(data, status, normalize = FALSE, simplecounts = FALSE) {
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms The number of permutations to perform
+#' @param simplecounts See Details.
 #' @return The distribution of the test statistic after nperms swapping of case/control labels
+#' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
+#' @details  When simplecounts = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+#' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+#' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+#' The latter method is used by the R package AssotesteR.  
 #' @examples
 #' data(rec.ccdata)
 #' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
@@ -34,8 +40,8 @@ cAlpha <- function(data, status, normalize = FALSE, simplecounts = FALSE) {
 #' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 #' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 #' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status,100)
-cAlpha_perm <- function(data, status, nperms) {
-    .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', data, status, nperms)
+cAlpha_perm <- function(data, status, nperms, simplecounts = FALSE) {
+    .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', data, status, nperms, simplecounts)
 }
 
 #' Single-marker association test based on the chi-squared statistic
@@ -49,6 +55,22 @@ cAlpha_perm <- function(data, status, nperms) {
 #' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos, status)
 chisq_per_marker <- function(ccdata, ccstatus) {
     .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
+}
+
+#' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param k The number of markers for the ESM_K statistic.
+#' @return The ESM_K test statistic value based on chi-squared tests per marker.
+#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' rec.ccdata.chisq = esm_chisq( rec.ccdata$genos[,which(keep==1)], status, 50 )
+esm_chisq <- function(ccdata, ccstatus, k) {
+    .Call('buRden_esm_chisq', PACKAGE = 'buRden', ccdata, ccstatus, k)
 }
 
 #' Obtain permutaion distribution of the ESM_K statistic for case/control data
@@ -90,7 +112,7 @@ esm <- function(scores, K) {
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param minfreq A site with minor allele frequency < minfreq will not be kept.
-#' @param maxfreq A site with minor allele frequency > maxfreq will not be kept.
+#' @param maxfreq A site with minor allele frequency >= maxfreq will not be kept.
 #' @param rsq_cutoff  When comparing two sites, if the genotype correlation coefficient r^2 is >= rsq_cutoff, only the first site will be kept.
 #' @return A vector of integers containing the values 0 (not kept) and 1 (kept).  The length of the vector is equal to the number of columns in ccdata.
 #' @details Regarding rsq_cutoff, when sites i and j are compared (j > i), site i will be kept and site j will not be kept.
