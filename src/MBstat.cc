@@ -51,7 +51,6 @@ NumericVector MBweights(const IntegerMatrix & data,
 Rcpp::List MBstat( const IntegerMatrix & data,
 		   const IntegerVector & status )
 {
-  NumericVector weights = MBweights(data,status);
   unsigned ncontrols = count(status.begin(),status.end(),0);
   //Here, we'll keep track of overall scores
   NumericVector scores(data.nrow()),
