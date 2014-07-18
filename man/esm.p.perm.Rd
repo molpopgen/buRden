@@ -15,7 +15,7 @@ esm.p.perm(ccdata, ccstatus, nperms, k)
 \item{k}{Number of markers to use for ESM_K statistic}
 }
 \value{
-Monte-carlo estimate of P(perm stat >= observed data)
+The test statistic, Monte-carlo estimate of P(perm stat >= observed data), and a Z-score based on the permutation distribution.
 }
 \description{
 Estimate ESM_K p-value by permutation

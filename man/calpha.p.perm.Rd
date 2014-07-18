@@ -15,7 +15,7 @@ calpha.p.perm(ccdata, ccstatus, nperms, simple.counts = FALSE)
 \item{simple.counts}{See Details.}
 }
 \value{
-Monte-carlo estimate of P(perm stat >= observed data)
+The test statistic, Monte-carlo estimate of P(perm stat >= observed data), and a Z-score based on the permutation distribution.
 }
 \description{
 Estimate c-alpha p-value by permutation

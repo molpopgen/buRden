@@ -13,7 +13,7 @@ MB.p.perm(ccdata, ccstatus, nperms)
 \item{nperms}{Number of permutations to perform}
 }
 \value{
-A list of p-values, one for each of the three models
+A list of statistics, p-values, and Z-scores, one for each of the three models
 }
 \description{
 Estimate Madsen-Brownin p-value by permutation
