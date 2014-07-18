@@ -16,6 +16,9 @@ The M-B test statistic for the "general genetic", "recessive", and "dominant" mo
 \description{
 Madsen-Browning test statistics
 }
+\details{
+When calculating the rank of an individual's score, the function uses the equivalent of ties="min" in R's rank() function.
+}
 \examples{
 data(rec.ccdata)
 status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
