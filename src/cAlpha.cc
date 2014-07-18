@@ -16,6 +16,7 @@ using namespace std;
 //' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
 //' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
 //' The latter method is used by the R package AssotesteR.  
+//' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 //' @examples
 //' data(rec.ccdata)
 //' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )

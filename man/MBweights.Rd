@@ -19,4 +19,7 @@ Calculate Madsen-Browning weights.
 \details{
 Calculation is done under the "general genetic model" defined in Madsen and Browning.
 }
+\references{
+Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+}
 

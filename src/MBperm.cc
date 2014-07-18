@@ -11,6 +11,7 @@ using namespace std;
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case. 
 //' @param nperms The number of permutations to perform
 //' @return A data frame of permuted statistics
+//' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 //' @examples
 //' data(rec.ccdata)
 //' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))

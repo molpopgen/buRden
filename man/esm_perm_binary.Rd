@@ -29,4 +29,7 @@ rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
 rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
 rec.ccdata.esm.permdist = esm_perm_binary(rec.ccdata$genos[,which(keep==1)],status,100,50)
 }
+\references{
+Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+}
 

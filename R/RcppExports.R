@@ -11,6 +11,7 @@
 #' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
 #' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
 #' The latter method is used by the R package AssotesteR.  
+#' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 #' @examples
 #' data(rec.ccdata)
 #' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
@@ -56,6 +57,7 @@ chisq_per_marker <- function(ccdata, ccstatus) {
 #' @param nperms Number of permutations to perform
 #' @param k Number of markers to use for ESM_K statistic
 #' @return A vector of the permuted test statistic values
+#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
@@ -72,7 +74,7 @@ esm_perm_binary <- function(ccdata, ccstatus, nperms, k) {
 #' @param scores A vector of single-marker association test scores, on a -log10 scale
 #' @param K the number of markers used to calculate ESM_K
 #' @return The ESM_K test statistic value
-#' @note See http://www.ncbi.nlm.nih.gov/pubmed/23437004 for detail on the test statistic
+#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
@@ -105,6 +107,7 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case. 
 #' @param nperms The number of permutations to perform
 #' @return A data frame of permuted statistics
+#' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
@@ -121,6 +124,7 @@ MB_perm <- function(ccdata, ccstatus, nperms) {
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return An array of weights, one for each column in data.
 #' @details Calculation is done under the "general genetic model" defined in Madsen and Browning.
+#' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 MBweights <- function(data, status) {
     .Call('buRden_MBweights', PACKAGE = 'buRden', data, status)
 }
@@ -129,6 +133,7 @@ MBweights <- function(data, status) {
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return The M-B test statistic for the "general genetic", "recessive", and "dominant" models.
+#' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))

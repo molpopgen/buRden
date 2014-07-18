@@ -26,4 +26,7 @@ keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
 mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
 }
+\references{
+Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+}
 

@@ -12,6 +12,7 @@ using namespace std;
 //' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @return An array of weights, one for each column in data.
 //' @details Calculation is done under the "general genetic model" defined in Madsen and Browning.
+//' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 // [[Rcpp::export]]
 NumericVector MBweights(const IntegerMatrix & data,
 			const IntegerVector & status)
@@ -38,6 +39,7 @@ NumericVector MBweights(const IntegerMatrix & data,
 //' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 //' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @return The M-B test statistic for the "general genetic", "recessive", and "dominant" models.
+//' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 //' @examples
 //' data(rec.ccdata)
 //' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
