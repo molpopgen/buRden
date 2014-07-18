@@ -156,6 +156,7 @@ MBweights <- function(data, status) {
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return The M-B test statistic for the "general genetic", "recessive", and "dominant" models.
 #' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+#' @details When calculating the rank of an individual's score, the function uses the equivalent of ties="min" in R's rank() function.
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
