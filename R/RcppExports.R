@@ -26,7 +26,7 @@ cAlpha <- function(data, status) {
 #' #get minor allele freqs in 
 #' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 #' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
-#' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
+#' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status,100)
 cAlpha_perm <- function(data, status, nperms) {
     .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', data, status, nperms)
 }
