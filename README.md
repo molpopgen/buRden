@@ -23,6 +23,14 @@ To install into a custom location:
 R_LIBS=/path/to/special/place R CMD INSTALL buRden
 ```
 
+##Documentation
+
+All documentation is provided via R's help system.  You may build the pdf of the package manual using the following command:
+
+```
+R CMD Rd2pdf buRden
+```
+
 ##Tests implemented:
 1. [Madsen and Browning](http://www.plosgenetics.org/article/info%3Adoi%2F10.1371%2Fjournal.pgen.1000384) (2009)
 2. [C-alpha](http://www.plosgenetics.org/article/info%3Adoi%2F10.1371%2Fjournal.pgen.1001322)
