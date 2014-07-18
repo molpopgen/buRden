@@ -9,7 +9,13 @@ using namespace std;
 //' The c-alpha statistic
 //' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 //' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
-//' @return The c-alpha test statistic
+//' @param normalize Return the statistic divided by the square root of its variance.
+//' @param simplecounts See Details.
+//' @return The c-alpha test statistic.  If normalize = TRUE, then T/sqrt(Z) is returned, otherwise T is returned.
+//' @details  When simplecounts = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+//' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+//' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+//' The latter method is used by the R package AssotesteR.  
 //' @examples
 //' data(rec.ccdata)
 //' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
@@ -18,7 +24,9 @@ using namespace std;
 //' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 // [[Rcpp::export]]
 double cAlpha( const IntegerMatrix & data,
-	       const IntegerVector & status )
+	       const IntegerVector & status,
+	       const bool & normalize = false,
+	       const bool & simplecounts = false)
 {
   /*
     p0 = proportion of cases
@@ -36,44 +44,64 @@ double cAlpha( const IntegerMatrix & data,
       unsigned n_i=0,y_i=0;
       for( unsigned ind = 0 ; ind < data.nrow() ; ++ind )
 	{
-	  n_i += data(ind,site);
+	  /*
+	    NOTE: AssotesteR does things differently.
+	    That package would do:
+	    n_i += (data(ind,site)>0)?1:0;
+
+	    I argue that AssotesteR is wrong, as het- vs hom-
+	    genotype is probably kinda important.  For example,
+	    if 10 aa genotypes are in cases vs. 10Aa genotypes in 
+	    controls, there are 2x as many observations of the mutation
+	    in cases, which the above calculation misses.
+	   */
+	  n_i += (simplecounts) ? (data(ind,site)>0) : data(ind,site);
 	  switch( status[ind] )
 	    {
 	    case 0:
 	      break;
 	    case 1:
-	      y_i += data(ind,site);
+	      //See note above re: AssotesteR
+	      y_i += (simplecounts) ? (data(ind,site)>0) : data(ind,site);
 	      break;
 	    default:
 	      stop("cAlpha: phenotype label other than 0 or 1 encountered");
 	    }
 	}
       T += ( pow( double(y_i)-double(n_i)*p0, 2.) - double(n_i)*p0*(1.-p0) );
-      map<unsigned,unsigned>::iterator itr = ns.find(n_i);
-      if( itr == ns.end() )
+      if (normalize)
 	{
-	  ns[n_i]=1;
-	}
-      else
-	{
-	  itr->second++;
+	  map<unsigned,unsigned>::iterator itr = ns.find(n_i);
+	  if( itr == ns.end() )
+	    {
+	      ns[n_i]=1;
+	    }
+	  else
+	    {
+	      itr->second++;
+	    }
 	}
     }
 
-  double Z = 0.;
-  for( map<unsigned,unsigned>::const_iterator itr = ns.begin() ; itr != ns.end() ; ++itr )
+  if( normalize )
     {
-      double n = double(itr->first),m_of_n=double(itr->second);
-      double inner=0.;
-      double np01mp0 = n*p0*(1.-p0);
-      double np0 = n*p0;
-      for( unsigned u = 0 ; u <= n ; ++u )
+      double Z = 0.;
+      for( map<unsigned,unsigned>::const_iterator itr = ns.begin() ; itr != ns.end() ; ++itr )
 	{
-	  inner += R::dbinom(u,n,p0,0)*pow((pow(u-np0,2.) - np01mp0),2.);
+	  double n = double(itr->first),m_of_n=double(itr->second);
+	  double inner=0.;
+	  double np01mp0 = n*p0*(1.-p0);
+	  double np0 = n*p0;
+	  for( unsigned u = 0 ; u <= n ; ++u )
+	    {
+	      inner += R::dbinom(u,n,p0,0)*pow((pow(u-np0,2.) - np01mp0),2.);
+	    }
+	  Z += m_of_n*inner;
 	}
-      Z += m_of_n*inner;
+      return ( T/sqrt(Z) );
     }
-  return ( T/sqrt(Z) );
+
+  return T;
 }
 
 //' Permutation distribution of the c-alpha statistic

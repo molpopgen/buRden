@@ -4,15 +4,21 @@
 #' The c-alpha statistic
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
-#' @return The c-alpha test statistic
+#' @param normalize Return the statistic divided by the square root of its variance.
+#' @param simplecounts See Details.
+#' @return The c-alpha test statistic.  If normalize = TRUE, then T/sqrt(Z) is returned, otherwise T is returned.
+#' @details  When simplecounts = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+#' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+#' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+#' The latter method is used by the R package AssotesteR.  
 #' @examples
 #' data(rec.ccdata)
 #' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
 #' #get minor allele freqs in 
 #' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 #' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
-cAlpha <- function(data, status) {
-    .Call('buRden_cAlpha', PACKAGE = 'buRden', data, status)
+cAlpha <- function(data, status, normalize = FALSE, simplecounts = FALSE) {
+    .Call('buRden_cAlpha', PACKAGE = 'buRden', data, status, normalize, simplecounts)
 }
 
 #' Permutation distribution of the c-alpha statistic

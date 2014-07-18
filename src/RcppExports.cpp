@@ -6,15 +6,17 @@
 using namespace Rcpp;
 
 // cAlpha
-double cAlpha(const IntegerMatrix& data, const IntegerVector& status);
-RcppExport SEXP buRden_cAlpha(SEXP dataSEXP, SEXP statusSEXP) {
+double cAlpha(const IntegerMatrix& data, const IntegerVector& status, const bool& normalize = false, const bool& simplecounts = false);
+RcppExport SEXP buRden_cAlpha(SEXP dataSEXP, SEXP statusSEXP, SEXP normalizeSEXP, SEXP simplecountsSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< const IntegerMatrix& >::type data(dataSEXP );
         Rcpp::traits::input_parameter< const IntegerVector& >::type status(statusSEXP );
-        double __result = cAlpha(data, status);
+        Rcpp::traits::input_parameter< const bool& >::type normalize(normalizeSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type simplecounts(simplecountsSEXP );
+        double __result = cAlpha(data, status, normalize, simplecounts);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
