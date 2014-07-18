@@ -16,6 +16,9 @@ A vector of -log10(p-values) from a chi-squared test with one degree of freedom.
 \description{
 Single-marker association test based on the chi-squared statistic
 }
+\details{
+The chi-squared values have Yate's continuity correction applied
+}
 \examples{
 data(rec.ccdata)
 status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
