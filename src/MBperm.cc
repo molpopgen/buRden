@@ -7,6 +7,10 @@ using namespace Rcpp;
 using namespace std;
 
 //' Get permutation distribution of Madsen-Browning test statistics
+//' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.                                                                                    
+//' @param status A vector of binary phenotype labels.  0 = control, 1 = case. 
+//' @param nperms The number of permutations to perform
+//' @return A data frame of permuted statistics
 //' @examples
 //' data(rec.ccdata)
 //' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
