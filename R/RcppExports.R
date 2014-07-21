@@ -5,6 +5,10 @@ allBurdenStats <- function(ccdata, ccstatus, esm_K, normalize_calpha = FALSE, si
     .Call('buRden_allBurdenStats', PACKAGE = 'buRden', ccdata, ccstatus, esm_K, normalize_calpha, simplecount_calpha)
 }
 
+allBurdenStatsPerm <- function(ccdata, ccstatus, esm_K, nperms, normalize_calpha = FALSE, simplecount_calpha = FALSE) {
+    .Call('buRden_allBurdenStatsPerm', PACKAGE = 'buRden', ccdata, ccstatus, esm_K, nperms, normalize_calpha, simplecount_calpha)
+}
+
 #' The c-alpha statistic
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
