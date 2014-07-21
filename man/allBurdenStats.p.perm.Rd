@@ -18,7 +18,7 @@ allBurdenStats.p.perm(ccdata, ccstatus, nperms, esm.K.value,
 \item{calpha.simple.counts}{see Details}
 }
 \value{
-A list of p-values for all burden statistics.
+A list of (one-tailed) p-values and Z-scores for all burden statistics.
 }
 \description{
 Estimate p-values for all burden statistics by permutation

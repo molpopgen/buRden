@@ -83,7 +83,7 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
 #' @param nperms Number of permutations to perform
 #' @param esm.K.value The number of markers to use in the calculation of ESM_K
 #' @param calpha.simple.counts see Details
-#' @return A list of p-values for all burden statistics.
+#' @return A list of (one-tailed) p-values and Z-scores for all burden statistics.
 #' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 #' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 #' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
@@ -103,9 +103,14 @@ allBurdenStats.p.perm = function( ccdata, ccstatus, nperms, esm.K.value, calpha.
     perms = allBurdenStatsPerm(ccdata,ccstatus,esm.K.value,nperms,simplecount_calpha = calpha.simple.counts)
 
     rv = list(esm.p.value = length(which(perms$esm.permdist >= stats$esm.stat))/nperms,
+      esm.z.value = ( stats$esm.stat - mean(perms$esm.permdist) )/sd(perms$esm.permdist),
       calpha.p.value = length(which(perms$calpha.permdist >= stats$calpha.stat))/nperms,
+      calpha.z.value = ( stats$calpha.stat - mean(perms$calpha.permdist) )/sd(perms$calpha.permdist),
       MB.general.p.value = length(which(perms$MB.general.permdist >= stats$MB.general.stat))/nperms,
+      MB.general.z.value = ( stats$MB.general.stat - mean(perms$MB.general.permdist) )/sd(perms$MB.general.permdist),
       MB.recessive.p.value = length(which(perms$MB.recessive.permdist >= stats$MB.recessive.stat))/nperms,
-      MB.dominant.p.value = length(which(perms$MB.dominant.permdist >= stats$MB.dominant.stat))/nperms)
+      MB.recessive.z.value = ( stats$MB.recessive.stat - mean(perms$MB.recessive.permdist) )/sd(perms$MB.recessive.permdist),
+      MB.dominant.p.value = length(which(perms$MB.dominant.permdist >= stats$MB.dominant.stat))/nperms,
+      MB.dominant.z.value = ( stats$MB.dominant.stat - mean(perms$MB.dominant.permdist) )/sd(perms$MB.dominant.permdist))
     return(rv)
   }
