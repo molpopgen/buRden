@@ -7,6 +7,20 @@
 using namespace Rcpp;
 using namespace std;
 
+//' Calculate all burden statistics simultaneously
+//' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+//' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+//' @param esm_K The number of markers to use in the calculation of ESM_K
+//' @param normalize_calpha If TRUE, return T/sqrt(Z), otherwise return T.
+//' @param simplecount_calpha see Details
+//' @return A list of values for all burden statistics
+//' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
+//' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+//' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+//' @details  When simplecount_alpha = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+//' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+//' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+//' The latter method is used by the R package AssotesteR.
 // [[Rcpp::export]]
 List allBurdenStats( const IntegerMatrix & ccdata,
 		     const IntegerVector & ccstatus,
@@ -18,6 +32,21 @@ List allBurdenStats( const IntegerMatrix & ccdata,
   return stat_calculator(ccdata,ccstatus,f);
 }
 
+//' Estimate p-values for all burden statistics by permutation
+//' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+//' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+//' @param esm_K The number of markers to use in the calculation of ESM_K
+//' @param nperms Number of permutations to perform
+//' @param normalize_calpha If TRUE, return T/sqrt(Z), otherwise return T.
+//' @param simplecount_calpha see Details
+//' @return A list of p-values for all burden statistics.
+//' @references Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
+//' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+//' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+//' @details  When simplecount_alpha = FALSE, heterozygous and homozygous genotypes are treated as different numbers of observations
+//' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
+//' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
+//' The latter method is used by the R package AssotesteR.
 // [[Rcpp::export]]
 List allBurdenStatsPerm( const IntegerMatrix & ccdata,
 			 const IntegerVector & ccstatus,

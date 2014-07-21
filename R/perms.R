@@ -10,7 +10,7 @@
 #' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #' #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
 #' keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
-#' rec.ccdata.esm.p = esm.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 100, 50 )
+#' rec.ccdata.esm.p = esm.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 10, 50 )
 esm.p.perm = function( ccdata, ccstatus, nperms, k )
   {
     stat = esm_chisq(ccdata,ccstatus,k)
@@ -37,7 +37,7 @@ esm.p.perm = function( ccdata, ccstatus, nperms, k )
 #' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #' #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
 #' keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
-#' rec.ccdata.calpha.p = calpha.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 100 )
+#' rec.ccdata.calpha.p = calpha.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 10 )
 calpha.p.perm = function( ccdata, ccstatus, nperms, simple.counts = FALSE )
   {
     stat = cAlpha(ccdata,ccstatus,simple.counts)
@@ -59,7 +59,7 @@ calpha.p.perm = function( ccdata, ccstatus, nperms, simple.counts = FALSE )
 #' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #' #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
 #' keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
-#' rec.ccdata.MB.p = MB.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 100 )
+#' rec.ccdata.MB.p = MB.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 10 )
 MB.p.perm = function(ccdata, ccstatus, nperms )
   {
     stats = MBstat(ccdata,ccstatus)
@@ -91,6 +91,12 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
 #' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
 #' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
 #' The latter method is used by the R package AssotesteR.
+#' @examples
+#' data(rec.ccdata)
+#' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
+#' keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
+#' all.p = allBurdenStats.p.perm(rec.ccdata$genos[,which(keep==1)],rec.ccdata.status,10,50)
 allBurdenStats.p.perm = function( ccdata, ccstatus, nperms, esm.K.value, calpha.simple.counts = FALSE )
   {
     stats = allBurdenStats(ccdata,ccstatus,esm.K.value,simplecount_calpha = calpha.simple.counts)

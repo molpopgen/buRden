@@ -25,7 +25,7 @@ void stat_allstats::update()
 }
  
 void stat_allstats::operator()(const int & genotype,
-			  const int & ccstatus)
+			       const int & ccstatus)
 {
   __chisq(genotype,ccstatus);
   __calpha(genotype,ccstatus);
