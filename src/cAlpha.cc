@@ -1,4 +1,6 @@
 #include <Rcpp.h>
+#include <stat_cAlpha.hpp>
+#include <stat_calculator.hpp>
 #include <randWrapper.hpp>
 #include <algorithm>
 #include <map>
@@ -29,80 +31,9 @@ double cAlpha( const IntegerMatrix & data,
 	       const bool & normalize = false,
 	       const bool & simplecounts = false)
 {
-  /*
-    p0 = proportion of cases
-    
-    For a mutation that occurs n_i total times in the sample,
-    we expect there to be y_i = po*n_i in cases and (1-p0)*n_i copies in controls
-  */
-  unsigned ncontrols = count( status.begin(), status.end(), 0 ),
-    ncases = status.size() - ncontrols;
-  double p0 = double(ncases)/double(status.size());
-  map<unsigned,unsigned> ns;
-  double T = 0.;
-  for( unsigned site = 0 ; site < data.ncol() ; ++site )
-    {
-      unsigned n_i=0,y_i=0;
-      for( unsigned ind = 0 ; ind < data.nrow() ; ++ind )
-	{
-	  /*
-	    NOTE: AssotesteR does things differently.
-	    That package would do:
-	    n_i += (data(ind,site)>0)?1:0;
-
-	    I argue that AssotesteR is wrong, as het- vs hom-
-	    genotype is probably kinda important.  For example,
-	    if 10 aa genotypes are in cases vs. 10Aa genotypes in 
-	    controls, there are 2x as many observations of the mutation
-	    in cases, which the above calculation misses.
-	   */
-	  n_i += (simplecounts) ? (data(ind,site)>0) : data(ind,site);
-	  switch( status[ind] )
-	    {
-	    case 0:
-	      break;
-	    case 1:
-	      //See note above re: AssotesteR
-	      y_i += (simplecounts) ? (data(ind,site)>0) : data(ind,site);
-	      break;
-	    default:
-	      stop("cAlpha: phenotype label other than 0 or 1 encountered");
-	    }
-	}
-      T += ( pow( double(y_i)-double(n_i)*p0, 2.) - double(n_i)*p0*(1.-p0) );
-      if (normalize)
-	{
-	  map<unsigned,unsigned>::iterator itr = ns.find(n_i);
-	  if( itr == ns.end() )
-	    {
-	      ns[n_i]=1;
-	    }
-	  else
-	    {
-	      itr->second++;
-	    }
-	}
-    }
-
-  if( normalize )
-    {
-      double Z = 0.;
-      for( map<unsigned,unsigned>::const_iterator itr = ns.begin() ; itr != ns.end() ; ++itr )
-	{
-	  double n = double(itr->first),m_of_n=double(itr->second);
-	  double inner=0.;
-	  double np01mp0 = n*p0*(1.-p0);
-	  double np0 = n*p0;
-	  for( unsigned u = 0 ; u <= n ; ++u )
-	    {
-	      inner += R::dbinom(u,n,p0,0)*pow((pow(u-np0,2.) - np01mp0),2.);
-	    }
-	  Z += m_of_n*inner;
-	}
-      return ( T/sqrt(Z) );
-    }
-
-  return T;
+  stat_cAlpha f(status,normalize,simplecounts);
+  List rv =  stat_calculator(data,status,f);
+  return as<double>(rv["statistic"] );
 }
 
 //' Permutation distribution of the c-alpha statistic
