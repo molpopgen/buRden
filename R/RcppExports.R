@@ -22,8 +22,8 @@ allBurdenStats <- function(ccdata, ccstatus, esm_K, normalize_calpha = FALSE, si
 #' Estimate p-values for all burden statistics by permutation
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
-#' @param esm_K The number of markers to use in the calculation of ESM_K
 #' @param nperms Number of permutations to perform
+#' @param esm_K The number of markers to use in the calculation of ESM_K
 #' @param normalize_calpha If TRUE, return T/sqrt(Z), otherwise return T.
 #' @param simplecount_calpha see Details
 #' @return A list of p-values for all burden statistics.
@@ -34,8 +34,8 @@ allBurdenStats <- function(ccdata, ccstatus, esm_K, normalize_calpha = FALSE, si
 #' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
 #' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
 #' The latter method is used by the R package AssotesteR.
-allBurdenStatsPerm <- function(ccdata, ccstatus, esm_K, nperms, normalize_calpha = FALSE, simplecount_calpha = FALSE) {
-    .Call('buRden_allBurdenStatsPerm', PACKAGE = 'buRden', ccdata, ccstatus, esm_K, nperms, normalize_calpha, simplecount_calpha)
+allBurdenStatsPerm <- function(ccdata, ccstatus, nperms, esm_K, LLc_maf, LLc_maf_control = TRUE, normalize_calpha = FALSE, simplecount_calpha = FALSE) {
+    .Call('buRden_allBurdenStatsPerm', PACKAGE = 'buRden', ccdata, ccstatus, nperms, esm_K, LLc_maf, LLc_maf_control, normalize_calpha, simplecount_calpha)
 }
 
 #' The c-alpha statistic

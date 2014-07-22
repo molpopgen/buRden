@@ -3,8 +3,8 @@
 \alias{allBurdenStats.p.perm}
 \title{Estimate p-values for all burden statistics by permutation}
 \usage{
-allBurdenStats.p.perm(ccdata, ccstatus, nperms, esm.K.value,
-  calpha.simple.counts = FALSE)
+allBurdenStats.p.perm(ccdata, ccstatus, nperms, esm.K.value, LLc.maf,
+  LLc.maf.controls = TRUE, calpha.simple.counts = FALSE)
 }
 \arguments{
 \item{ccdata}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
@@ -14,6 +14,10 @@ allBurdenStats.p.perm(ccdata, ccstatus, nperms, esm.K.value,
 \item{nperms}{Number of permutations to perform}
 
 \item{esm.K.value}{The number of markers to use in the calculation of ESM_K}
+
+\item{LLc.maf}{For Li and Leal's statistic, only consider variants whose minor allele frequencies are <= maf}
+
+\item{LLc.maf.controls}{For Li and Leal's statistic, calculate MAF from controls only if TRUE, otherwise from entire sample}
 
 \item{calpha.simple.counts}{see Details}
 }
@@ -37,6 +41,8 @@ keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
 all.p = allBurdenStats.p.perm(rec.ccdata$genos[,which(keep==1)],rec.ccdata.status,10,50)
 }
 \references{
+Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
+
 Neale, B. M., Rivas, M. A., Voight, B. F., Altshuler, D., Devlin, B., Orho-Melander, M., et al. (2011). Testing for an Unusual Distribution of Rare Variants. PLoS Genetics, 7(3), e1001322. doi:10.1371/journal.pgen.1001322
 
 Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384

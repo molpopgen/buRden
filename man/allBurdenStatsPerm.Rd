@@ -3,7 +3,8 @@
 \alias{allBurdenStatsPerm}
 \title{Estimate p-values for all burden statistics by permutation}
 \usage{
-allBurdenStatsPerm(ccdata, ccstatus, esm_K, nperms, normalize_calpha = FALSE,
+allBurdenStatsPerm(ccdata, ccstatus, nperms, esm_K, LLc_maf,
+  LLc_maf_control = TRUE, normalize_calpha = FALSE,
   simplecount_calpha = FALSE)
 }
 \arguments{
@@ -11,9 +12,9 @@ allBurdenStatsPerm(ccdata, ccstatus, esm_K, nperms, normalize_calpha = FALSE,
 
 \item{ccstatus}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 
-\item{esm_K}{The number of markers to use in the calculation of ESM_K}
-
 \item{nperms}{Number of permutations to perform}
+
+\item{esm_K}{The number of markers to use in the calculation of ESM_K}
 
 \item{normalize_calpha}{If TRUE, return T/sqrt(Z), otherwise return T.}
 
