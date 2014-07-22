@@ -38,7 +38,7 @@ data(rec.ccdata)
 rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
 keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
-all.p = allBurdenStats.p.perm(rec.ccdata$genos[,which(keep==1)],rec.ccdata.status,10,50)
+all.p = allBurdenStats.p.perm(rec.ccdata$genos[,which(keep==1)],rec.ccdata.status,10,50,5e-2)
 }
 \references{
 Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
