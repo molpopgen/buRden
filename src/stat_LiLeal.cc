@@ -39,22 +39,36 @@ void stat_LLcollapse::operator()(const int & genotype,
 
 Rcpp::List stat_LLcollapse::values()
 {
-  unsigned co=0,ca=0;
+  unsigned co=0,ca=0,cowo=0,cawo=0;
   for( unsigned i = 0 ; i < hasRare.size() ; ++i )
     {
       if( !status[i] ) //control
 	{
-	  co += (hasRare[i]>0) ? 1 : 0;
+	  if(hasRare[i])
+	    {
+	      ++co;
+	    }
+	  else
+	    {
+	      ++cowo;
+	    }
 	}
       else //case
 	{
-	  ca += (hasRare[i]>0) ? 1 : 0;
+	  if(hasRare[i])
+	    {
+	      ++ca;
+	    }
+	  else
+	    {
+	      ++cawo;
+	    }
 	}
     }
-  double phiA = double(ca)/double(N-ncontrols),phiAm=double(co)/double(ncontrols);
-  double num = pow(phiA-phiAm,2.);
-  double vc = double(N)*(num/(phiA+phiAm) + num/(2. - phiA - phiAm));
-  return List::create(Named("statistic") = vc);
+  double a = co,b=ca,c=cowo,d=cawo;
+  double __N = a+b+c+d;
+  double rv = log10(__N)+2.*log10(fabs(a*d-b*c)-__N/2.) - ( log10(a+b)+log10(c+d)+log10(b+d)+log10(a+c) );
+  return List::create(Named("statistic") = std::pow(10,rv));
 }
 
 //' Calculates Li and Leal's collapsed variant statistic, v_c
@@ -62,7 +76,7 @@ Rcpp::List stat_LLcollapse::values()
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param maf Only consider variants whose minor allele frequencies are <= maf
 //' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
-//' @return The non-centrality parameter of a chi-squared distribution.  This is obtained using the proportion of controls and cases with rare variants.
+//' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles
 //' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
 //' @examples
 //' data(rec.ccdata)

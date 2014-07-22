@@ -15,7 +15,7 @@ LLcollapse(ccdata, ccstatus, maf, maf_controls = FALSE)
 \item{maf_controls}{If true, calculate mafs from controls only.  Otherwise, use all individuals}
 }
 \value{
-The non-centrality parameter of a chi-squared distribution.  This is obtained using the proportion of controls and cases with rare variants.
+A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles
 }
 \description{
 Calculates Li and Leal's collapsed variant statistic, v_c
