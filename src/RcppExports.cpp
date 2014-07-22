@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // allBurdenStats
-List allBurdenStats(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& esm_K, const bool normalize_calpha = false, const bool simplecount_calpha = false);
-RcppExport SEXP buRden_allBurdenStats(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP esm_KSEXP, SEXP normalize_calphaSEXP, SEXP simplecount_calphaSEXP) {
+List allBurdenStats(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& esm_K, const double& LLc_maf, const bool& LLc_maf_control = true, const bool normalize_calpha = false, const bool simplecount_calpha = false);
+RcppExport SEXP buRden_allBurdenStats(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP esm_KSEXP, SEXP LLc_mafSEXP, SEXP LLc_maf_controlSEXP, SEXP normalize_calphaSEXP, SEXP simplecount_calphaSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -15,9 +15,11 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
         Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
         Rcpp::traits::input_parameter< const unsigned& >::type esm_K(esm_KSEXP );
+        Rcpp::traits::input_parameter< const double& >::type LLc_maf(LLc_mafSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type LLc_maf_control(LLc_maf_controlSEXP );
         Rcpp::traits::input_parameter< const bool >::type normalize_calpha(normalize_calphaSEXP );
         Rcpp::traits::input_parameter< const bool >::type simplecount_calpha(simplecount_calphaSEXP );
-        List __result = allBurdenStats(ccdata, ccstatus, esm_K, normalize_calpha, simplecount_calpha);
+        List __result = allBurdenStats(ccdata, ccstatus, esm_K, LLc_maf, LLc_maf_control, normalize_calpha, simplecount_calpha);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

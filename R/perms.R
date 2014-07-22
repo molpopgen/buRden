@@ -102,8 +102,8 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
 #' all.p = allBurdenStats.p.perm(rec.ccdata$genos[,which(keep==1)],rec.ccdata.status,10,50,5e-2)
 allBurdenStats.p.perm = function( ccdata, ccstatus, nperms, esm.K.value, LLc.maf,LLc.maf.controls = TRUE ,calpha.simple.counts = FALSE )
   {
-    stats = allBurdenStats(ccdata,ccstatus,esm.K.value,simplecount_calpha = calpha.simple.counts)
-    perms = allBurdenStatsPerm(ccdata,ccstatus,esm.K.value,nperms,simplecount_calpha = calpha.simple.counts)
+    stats = allBurdenStats(ccdata,ccstatus,esm.K.value,LLc.maf,LLc.maf.controls,simplecount_calpha = calpha.simple.counts)
+    perms = allBurdenStatsPerm(ccdata,ccstatus,esm.K.value,LLc.maf,LLc.maf.controls,nperms,simplecount_calpha = calpha.simple.counts)
     print(names(stats))
     print(names(perms))
     rv = list(esm.p.value = length(which(perms$esm.permdist >= stats$esm.stat))/nperms,
