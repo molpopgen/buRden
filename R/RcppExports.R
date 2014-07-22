@@ -39,8 +39,8 @@ allBurdenStatsPerm <- function(ccdata, ccstatus, esm_K, nperms, normalize_calpha
 }
 
 #' The c-alpha statistic
-#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param normalize Return the statistic divided by the square root of its variance.
 #' @param simplecounts See Details.
 #' @return The c-alpha test statistic.  If normalize = TRUE, then T/sqrt(Z) is returned, otherwise T is returned.
@@ -55,13 +55,13 @@ allBurdenStatsPerm <- function(ccdata, ccstatus, esm_K, nperms, normalize_calpha
 #' #get minor allele freqs in 
 #' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 #' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
-cAlpha <- function(data, status, normalize = FALSE, simplecounts = FALSE) {
-    .Call('buRden_cAlpha', PACKAGE = 'buRden', data, status, normalize, simplecounts)
+cAlpha <- function(ccdata, ccstatus, normalize = FALSE, simplecounts = FALSE) {
+    .Call('buRden_cAlpha', PACKAGE = 'buRden', ccdata, ccstatus, normalize, simplecounts)
 }
 
 #' Permutation distribution of the c-alpha statistic
-#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms The number of permutations to perform
 #' @param simplecounts See Details.
 #' @return The distribution of the test statistic after nperms swapping of case/control labels
@@ -77,8 +77,8 @@ cAlpha <- function(data, status, normalize = FALSE, simplecounts = FALSE) {
 #' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 #' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 #' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status,100)
-cAlpha_perm <- function(data, status, nperms, simplecounts = FALSE) {
-    .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', data, status, nperms, simplecounts)
+cAlpha_perm <- function(ccdata, ccstatus, nperms, simplecounts = FALSE) {
+    .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms, simplecounts)
 }
 
 #' Single-marker association test based on the chi-squared statistic
@@ -163,18 +163,18 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
 }
 
 #' Calculate Madsen-Browning weights.
-#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return An array of weights, one for each column in data.
 #' @details Calculation is done under the "general genetic model" defined in Madsen and Browning.
 #' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
-MBweights <- function(data, status) {
-    .Call('buRden_MBweights', PACKAGE = 'buRden', data, status)
+MBweights <- function(ccdata, ccstatus) {
+    .Call('buRden_MBweights', PACKAGE = 'buRden', ccdata, ccstatus)
 }
 
 #' Madsen-Browning test statistics
-#' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
-#' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @return The M-B test statistic for the "general genetic", "recessive", and "dominant" models.
 #' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
 #' @details When calculating the rank of an individual's score, the function uses the equivalent of ties="min" in R's rank() function.
@@ -184,8 +184,8 @@ MBweights <- function(data, status) {
 #' #filter out common alleles and marker pairs in high LD
 #' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 #' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
-MBstat <- function(data, status) {
-    .Call('buRden_MBstat', PACKAGE = 'buRden', data, status)
+MBstat <- function(ccdata, ccstatus) {
+    .Call('buRden_MBstat', PACKAGE = 'buRden', ccdata, ccstatus)
 }
 
 #' Get permutation distribution of Madsen-Browning test statistics
