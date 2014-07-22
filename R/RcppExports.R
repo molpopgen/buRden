@@ -220,3 +220,34 @@ ProductMoment <- function(x, y) {
     .Call('buRden_ProductMoment', PACKAGE = 'buRden', x, y)
 }
 
+#' Calculates Li and Leal's collapsed variant statistic, v_c
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param maf Only consider variants whose minor allele frequencies are <= maf
+#' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
+#' @return The non-centrality parameter of a chi-squared distribution.  This is obtained using the proportion of controls and cases with rare variants.
+#' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' LL = LLcollapse(rec.ccdata$genos,status,0.01)
+LLcollapse <- function(ccdata, ccstatus, maf, maf_controls = FALSE) {
+    .Call('buRden_LLcollapse', PACKAGE = 'buRden', ccdata, ccstatus, maf, maf_controls)
+}
+
+#' Permutation distribution of Li and Leal's collapsed variant statistic, v_c
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param nperms The number of permutations to perform
+#' @param maf Only consider variants whose minor allele frequencies are <= maf
+#' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
+#' @return The non-centrality parameter of a chi-squared distribution.  This is obtained using the proportion of controls and cases with rare variants.
+#' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' LL.perm = LLcollapse_perm(rec.ccdata$genos,status,10,0.01)
+LLcollapse_perm <- function(ccdata, ccstatus, nperms, maf, maf_controls = FALSE) {
+    .Call('buRden_LLcollapse_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms, maf, maf_controls)
+}
+

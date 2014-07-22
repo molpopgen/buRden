@@ -231,3 +231,40 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// LLcollapse
+List LLcollapse(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const double& maf, const bool& maf_controls = false);
+RcppExport SEXP buRden_LLcollapse(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP mafSEXP, SEXP maf_controlsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const double& >::type maf(mafSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type maf_controls(maf_controlsSEXP );
+        List __result = LLcollapse(ccdata, ccstatus, maf, maf_controls);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// LLcollapse_perm
+NumericVector LLcollapse_perm(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms, const double& maf, const bool& maf_controls = false);
+RcppExport SEXP buRden_LLcollapse_perm(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP, SEXP mafSEXP, SEXP maf_controlsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP );
+        Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP );
+        Rcpp::traits::input_parameter< const double& >::type maf(mafSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type maf_controls(maf_controlsSEXP );
+        NumericVector __result = LLcollapse_perm(ccdata, ccstatus, nperms, maf, maf_controls);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
