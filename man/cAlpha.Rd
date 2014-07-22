@@ -3,12 +3,12 @@
 \alias{cAlpha}
 \title{The c-alpha statistic}
 \usage{
-cAlpha(data, status, normalize = FALSE, simplecounts = FALSE)
+cAlpha(ccdata, ccstatus, normalize = FALSE, simplecounts = FALSE)
 }
 \arguments{
-\item{data}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
+\item{ccdata}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
 
-\item{status}{A vector of binary phenotype labels.  0 = control, 1 = case.}
+\item{ccstatus}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 
 \item{normalize}{Return the statistic divided by the square root of its variance.}
 

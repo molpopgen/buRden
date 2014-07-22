@@ -3,12 +3,12 @@
 \alias{cAlpha_perm}
 \title{Permutation distribution of the c-alpha statistic}
 \usage{
-cAlpha_perm(data, status, nperms, simplecounts = FALSE)
+cAlpha_perm(ccdata, ccstatus, nperms, simplecounts = FALSE)
 }
 \arguments{
-\item{data}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
+\item{ccdata}{A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.}
 
-\item{status}{A vector of binary phenotype labels.  0 = control, 1 = case.}
+\item{ccstatus}{A vector of binary phenotype labels.  0 = control, 1 = case.}
 
 \item{nperms}{The number of permutations to perform}
 
