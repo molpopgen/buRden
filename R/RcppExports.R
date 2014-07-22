@@ -231,7 +231,7 @@ ProductMoment <- function(x, y) {
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param maf Only consider variants whose minor allele frequencies are <= maf
 #' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
-#' @return The non-centrality parameter of a chi-squared distribution.  This is obtained using the proportion of controls and cases with rare variants.
+#' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles.  Yate's correction is applied.
 #' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
 #' @examples
 #' data(rec.ccdata)
