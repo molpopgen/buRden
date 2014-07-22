@@ -162,23 +162,6 @@ filter_sites <- function(ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff) {
     .Call('buRden_filter_sites', PACKAGE = 'buRden', ccdata, ccstatus, minfreq, maxfreq, rsq_cutoff)
 }
 
-#' Get permutation distribution of Madsen-Browning test statistics
-#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.                                                                                    
-#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case. 
-#' @param nperms The number of permutations to perform
-#' @return A data frame of permuted statistics
-#' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
-#' @examples
-#' data(rec.ccdata)
-#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
-#' #filter out common alleles and marker pairs in high LD
-#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
-#' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
-#' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
-MB_perm <- function(ccdata, ccstatus, nperms) {
-    .Call('buRden_MB_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms)
-}
-
 #' Calculate Madsen-Browning weights.
 #' @param data A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param status A vector of binary phenotype labels.  0 = control, 1 = case.
@@ -203,6 +186,23 @@ MBweights <- function(data, status) {
 #' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
 MBstat <- function(data, status) {
     .Call('buRden_MBstat', PACKAGE = 'buRden', data, status)
+}
+
+#' Get permutation distribution of Madsen-Browning test statistics
+#' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.                                                                                    
+#' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case. 
+#' @param nperms The number of permutations to perform
+#' @return A data frame of permuted statistics
+#' @references Madsen, B. E., & Browning, S. R. (2009). A groupwise association test for rare mutations using a weighted sum statistic. PLoS Genetics, 5(2), e1000384. doi:10.1371/journal.pgen.1000384
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' mbstats = MBstat( rec.ccdata$genos[,which(keep==1)], status )
+#' mbstats.perm = MB_perm( rec.ccdata$genos[,which(keep==1)], status, 100 )
+MB_perm <- function(ccdata, ccstatus, nperms) {
+    .Call('buRden_MB_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms)
 }
 
 #' Pearson's product-moment correlation
