@@ -22,7 +22,7 @@ using namespace std;
 //' @examples
 //' data(rec.ccdata)
 //' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
-//' #get minor allele freqs in 
+//' #get minor allele freqs in the data
 //' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 //' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 // [[Rcpp::export]]
@@ -50,7 +50,7 @@ double cAlpha( const IntegerMatrix & ccdata,
 //' @examples
 //' data(rec.ccdata)
 //' status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
-//' #get minor allele freqs in 
+//' #get minor allele freqs in the data
 //' rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 //' rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 //' rec.ccdata.calpha.permdist = cAlpha_perm(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status,100)
