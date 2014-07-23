@@ -29,7 +29,7 @@ The latter method is used by the R package AssotesteR.
 \examples{
 data(rec.ccdata)
 status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases) )
-#get minor allele freqs in
+#get minor allele freqs in the data
 rec.ccdata.MAFS = colSums( rec.ccdata$genos[which(status==0),] )/(2*rec.ccdata$ncontrols)
 rec.ccdata.calpha = cAlpha(rec.ccdata$genos[,which(rec.ccdata.MAFS <= 0.05)],status)
 }

@@ -30,7 +30,7 @@ The latter method is used by the R package AssotesteR.
 data(rec.ccdata)
 rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
-keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,1e-3,5e-2,0.8)
+keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,0,5e-2,0.8)
 rec.ccdata.calpha.p = calpha.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 10 )
 }
 \references{
