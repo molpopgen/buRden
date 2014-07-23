@@ -1,10 +1,13 @@
 #include <stat_LiLeal.hpp>
 #include <stat_calculator.hpp>
 #include <randWrapper.hpp>
+#include <chisq.hpp>
 #include <algorithm>
+#include <cmath>
 
 using namespace Rcpp;
 using namespace std;
+
 stat_LLcollapse::stat_LLcollapse(const double & maf,
 				 const Rcpp::IntegerVector & ccstatus,
 				 const bool & maf_control) : maf_cutoff(maf),
@@ -65,10 +68,21 @@ Rcpp::List stat_LLcollapse::values()
 	    }
 	}
     }
-  double a = co,b=ca,c=cowo,d=cawo;
-  double __N = a+b+c+d;
-  double rv = log10(__N)+2.*log10(fabs(a*d-b*c)-__N/2.) - ( log10(a+b)+log10(c+d)+log10(b+d)+log10(a+c) );
-  return List::create(Named("statistic") = std::pow(10,rv));
+  return List::create(Named("statistic") = chisq(co,cowo,co,cawo));
+  //double x = chisq(co,cowo,ca,cawo);
+    
+  // double a = co,b=ca,c=cowo,d=cawo;
+  // double __N = a+b+c+d;
+  // double inner = fabs(a*d-b*c);
+  // if ( inner == 0. ) 
+  //   {
+  //     List::create(Named("statistic") =0.);
+  //   }
+  // double rv = log10(__N)+2.*log10(fabs(inner)) - ( log10(a+b)+log10(c+d)+log10(b+d)+log10(a+c) );
+  // Rcerr << a << ' ' << b << ' ' << c << ' ' << d << ' ' << x <<' ' << std::pow(10,rv) << '\n';
+  // stop("stopping");
+  // return List::create(Named("statistic") = std::pow(10,rv));
+    
 }
 
 //' Calculates Li and Leal's collapsed variant statistic, v_c
@@ -76,7 +90,7 @@ Rcpp::List stat_LLcollapse::values()
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param maf Only consider variants whose minor allele frequencies are <= maf
 //' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
-//' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles.  Yate's correction is applied.
+//' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles. Yate's continuity correction is applied.
 //' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
 //' @examples
 //' data(rec.ccdata)

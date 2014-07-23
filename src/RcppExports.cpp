@@ -100,6 +100,25 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// chisq
+double chisq(const unsigned& a, const unsigned& b, const unsigned& c, const unsigned& d, const bool& yates);
+RcppExport SEXP buRden_chisq(SEXP aSEXP, SEXP bSEXP, SEXP cSEXP, SEXP dSEXP, SEXP yatesSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< const unsigned& >::type a(aSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type b(bSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type c(cSEXP );
+        Rcpp::traits::input_parameter< const unsigned& >::type d(dSEXP );
+        Rcpp::traits::input_parameter< const bool& >::type yates(yatesSEXP );
+        double __result = chisq(a, b, c, d, yates);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // esm_chisq
 double esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k);
 RcppExport SEXP buRden_esm_chisq(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP kSEXP) {
