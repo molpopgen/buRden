@@ -103,9 +103,7 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
 allBurdenStats.p.perm = function( ccdata, ccstatus, nperms, esm.K.value, LLc.maf,LLc.maf.controls = TRUE ,calpha.simple.counts = FALSE )
   {
     stats = allBurdenStats(ccdata,ccstatus,esm.K.value,LLc.maf,LLc.maf.controls,simplecount_calpha = calpha.simple.counts)
-    perms = allBurdenStatsPerm(ccdata,ccstatus,esm.K.value,LLc.maf,LLc.maf.controls,nperms,simplecount_calpha = calpha.simple.counts)
-    print(names(stats))
-    print(names(perms))
+    perms = allBurdenStatsPerm(ccdata,ccstatus,nperms,esm.K.value,LLc.maf,LLc.maf.controls,simplecount_calpha = calpha.simple.counts)
     rv = list(esm.p.value = length(which(perms$esm.permdist >= stats$esm.stat))/nperms,
       esm.z.value = ( stats$esm.stat - mean(perms$esm.permdist) )/sd(perms$esm.permdist),
       calpha.p.value = length(which(perms$calpha.permdist >= stats$calpha.stat))/nperms,

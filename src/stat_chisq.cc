@@ -1,4 +1,5 @@
 #include <stat_chisq.hpp>
+#include <chisq.hpp>
 #include <cmath>
 
 using namespace Rcpp;
@@ -11,19 +12,19 @@ stat_chisq::stat_chisq() : stat_base(),csqs( NumericVector() )
 
 double stat_chisq::log10chisq()
 {
-  double a = double(ctable[0]);
-  double b = double(ctable[2]);
-  double c = double(ctable[1]);
-  double d = double(ctable[3]);
+  // double a = double(ctable[0]);
+  // double b = double(ctable[2]);
+  // double c = double(ctable[1]);
+  // double d = double(ctable[3]);
 
-  double N = a+b+c+d;
-  double rv = log10(N)+2.*log10(fabs(a*d-b*c)-N/2.) - ( log10(a+b)+log10(c+d)+log10(b+d)+log10(a+c) );
+  //double rv = chisq(a,b,c,d,true);
+  double rv = chisq(ctable[0],ctable[2],ctable[1],ctable[3]);
   if (! isfinite(rv) )
     {
       //then the chisquared is 0, the p-value is 1, and -log10(1) = 0 
       return 0;
     }
-  return ( -log10( R::pchisq( std::pow(10,rv), 1., 0, 0 )) );
+  return ( -log10( R::pchisq( rv, 1., 0, 0 )) );
 }
 
 void stat_chisq::update() 

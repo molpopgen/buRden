@@ -101,6 +101,18 @@ chisq_per_marker <- function(ccdata, ccstatus) {
     .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
 }
 
+#' Chi-squared statistic for a 2x2 table
+#' @param a An observation
+#' @param b An observation
+#' @param c An observation
+#' @param d An observation
+#' @param yates Apply continuity correction?
+#' @return The equivalent of chisq.test( matrix(c(a,b,c,d),nrow=2,byrow=T),correct=yates )$statistic
+#' @details Calculated internally on a log10 scale.
+chisq <- function(a, b, c, d, yates) {
+    .Call('buRden_chisq', PACKAGE = 'buRden', a, b, c, d, yates)
+}
+
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
@@ -231,7 +243,7 @@ ProductMoment <- function(x, y) {
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param maf Only consider variants whose minor allele frequencies are <= maf
 #' @param maf_controls  If true, calculate mafs from controls only.  Otherwise, use all individuals
-#' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles.  Yate's correction is applied.
+#' @return A chi-squared statistic based on a 2x2 table of the number of cases and controls with and without rare alleles. Yate's continuity correction is applied.
 #' @references Li, B., & Leal, S. (2008). Methods for detecting associations with rare variants for common diseases: application to analysis of sequence data. The American Journal of Human Genetics, 83(3), 311-321.
 #' @examples
 #' data(rec.ccdata)

@@ -37,3 +37,4 @@ R CMD Rd2pdf buRden
 1. [Madsen and Browning](http://www.plosgenetics.org/article/info%3Adoi%2F10.1371%2Fjournal.pgen.1000384) (2009)
 2. [C-alpha](http://www.plosgenetics.org/article/info%3Adoi%2F10.1371%2Fjournal.pgen.1001322)
 3. [ESM](http://www.plosgenetics.org/article/info%3Adoi%2F10.1371%2Fjournal.pgen.1003258)
+4. A chi-squared test of the null model that the proportions of cases and controls carrying rare variants are the same.  This is equivalent to [Li and Leal's](http://www.ncbi.nlm.nih.gov/pubmed/18691683) "collapsing method".
