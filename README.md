@@ -1,4 +1,4 @@
-#Association tests for rare variants
+#Association test software from the Thornton Lab
 
 ##Obtaining the source
 
@@ -14,6 +14,15 @@ git clone https://github.com/molpopgen/buRden
 The package has been tested with various version of [GCC](http://gcc.gnu.org) (all versions 4.6.4 or greater) and [clang](http://clang.llvm.org/) (version clang-503.0.38) on OS X Mavericks.
 
 ##Installation
+
+The most straightforward approach is via R's [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package:
+
+~~~
+library(devtools)
+install_github("molpopgen/buRden")
+~~~
+
+The package may also be installed the "traditional" way:
 
 ```
 R CMD INSTALL buRden
