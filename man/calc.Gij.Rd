@@ -12,7 +12,7 @@ calc.Gij(genotypes)
 Equation 5 from www.pnas.org/cgi/doi/10.1073/pnas.1419064111
 }
 \note{
-copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc,
+copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc
 }
 \references{
 Golan et al. (2014) Measuring missing heritability: Inferring the contribution of common variants. www.pnas.org/cgi/doi/10.1073/pnas.1419064111

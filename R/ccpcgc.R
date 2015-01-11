@@ -1,5 +1,5 @@
 #' Turn genotypes into normalized genotypes
-#' @note copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc,
+#' @note copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc
 norm.genos <- function(genotypes)
     {
         ps <- apply(genotypes,2,mean)/2
@@ -8,7 +8,7 @@ norm.genos <- function(genotypes)
 
 #' Equation 5 from www.pnas.org/cgi/doi/10.1073/pnas.1419064111
 #' @param genotypes A matrix of genotypes
-#' @note copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc,
+#' @note copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc
 #' @references Golan et al. (2014) Measuring missing heritability: Inferring the contribution of common variants. www.pnas.org/cgi/doi/10.1073/pnas.1419064111
 calc.Gij <- function(genotypes)
     {

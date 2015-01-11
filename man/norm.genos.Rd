@@ -9,6 +9,6 @@ norm.genos(genotypes)
 Turn genotypes into normalized genotypes
 }
 \note{
-copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc,
+copied from Golan's original code at https://sites.google.com/site/davidgolanshomepage/software/pcgc
 }
 
