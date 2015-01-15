@@ -6,7 +6,7 @@
 calc.Gij(genotypes)
 }
 \arguments{
-\item{genotypes}{A matrix of genotypes}
+\item{genotypes}{An individuals x mutation matrix, coded 0,1,2 = number of copies of minor alleles}
 }
 \description{
 Equation 5 from www.pnas.org/cgi/doi/10.1073/pnas.1419064111

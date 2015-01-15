@@ -5,6 +5,9 @@
 \usage{
 norm.genos(genotypes)
 }
+\arguments{
+\item{genotypes}{An individuals x mutation matrix, coded 0,1,2 = number of copies of minor alleles}
+}
 \description{
 Turn genotypes into normalized genotypes
 }
