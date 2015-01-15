@@ -18,7 +18,7 @@ calc.Gij <- function(genotypes)
 	genotypes <- genotypes[,good]
 	m <- ncol(genotypes)
 	ps <- ps[good]
-	new.genotypes <- normalize.genotypes(genotypes)
+	new.genotypes <- norm.genos(genotypes)
 	G <- new.genotypes %*% t(new.genotypes) / m 
 	return(G)
     }
@@ -32,29 +32,40 @@ calc.Gij <- function(genotypes)
 #' @references Golan et al. (2014) Measuring missing heritability: Inferring the contribution of common variants. www.pnas.org/cgi/doi/10.1073/pnas.1419064111
 #'
 #' @examples
+#' \dontrun{
 #' data(rec.ccdata)
 #' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
-#' cc2pcgc(rec.ccdta$genos,rec.ccdata.status,"rec.ccdata.pcgc")
+#' cc2pcgc(rec.ccdata$genos,rec.ccdata.status,"rec.ccdata.pcgc")
+#' }
 cc2pcgc <- function( genotypes, status, filenamebase )
     {
         #write the raw genos file
         write.table(genotypes,file=filenamebase,col.names=FALSE,row.names=FALSE)
         #write the phenos file
         write.table( cbind(1:nrow(genotypes),1:nrow(genotypes),status),
+                    row.names=FALSE,col.names=FALSE,
                     file = paste(filenamebase,".phen",sep="") )
 
         #Now, the normalized genotype matrix
         genotypes.Gij = calc.Gij(genotypes)
-        ofile = gzfile( paste(filenamebase,".grm.gz",sep="") )
-        for( i in 1:nrow(genotypes) )  #who loves for loops in R?  This guy!
+        MM = matrix(10000,choose(nrow(genotypes),2) + nrow(genotypes),4)
+        C=1
+        for( i in 1:nrow(genotypes) )
             {
-                for( j in 1:i )
+                for(j in 1:i)
                     {
-                        write(paste(i,j,as.integer(1e4),genotypes.Gij[i,j]),ofile,ncolumns=4)
+                        MM[C,1] <- i
+                        MM[C,2] <- j
+                        MM[C,4] <- genotypes.Gij[i,j]
+                        C <- C + 1
                     }
             }
+        ofile = gzfile( paste(filenamebase,".grm.gz",sep=""),"w" )
+        write.table( MM, ofile, col.names=F,row.names=F,sep="\t" )
+        flush(ofile)
         close(ofile)
         #Finally, the normalized genotype id file
         write.table( cbind(1:nrow(genotypes),1:nrow(genotypes)),
-                    file = paste(filenamebase,".id",sep="") )
+                    file = paste(filenamebase,".grm.id",sep=""),
+                    row.names=FALSE,col.names=FALSE)
     }
