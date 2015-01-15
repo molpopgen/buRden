@@ -1,4 +1,4 @@
-#Association tests for rare variants
+#Association test software from the Thornton Lab
 
 ##Obtaining the source
 
@@ -15,6 +15,15 @@ The package has been tested with various version of [GCC](http://gcc.gnu.org) (a
 
 ##Installation
 
+The most straightforward approach is via R's [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package:
+
+~~~
+library(devtools)
+install_github("molpopgen/buRden")
+~~~
+
+The package may also be installed the "traditional" way:
+
 ```
 R CMD INSTALL buRden
 ```
@@ -24,6 +33,19 @@ To install into a custom location:
 ```
 R_LIBS=/path/to/special/place R CMD INSTALL buRden
 ```
+
+Or, using the devtools approach, invoke R:
+
+~~~
+R_LIBS=/path/to/special/place R
+~~~
+
+And then, from the R shell:
+
+~~~
+library(devtools)
+install_github("molpopgen/buRden")
+~~~
 
 ##Documentation
 
