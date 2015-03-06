@@ -34,6 +34,19 @@ To install into a custom location:
 R_LIBS=/path/to/special/place R CMD INSTALL buRden
 ```
 
+Or, using the devtools approach, invoke R:
+
+~~~
+R_LIBS=/path/to/special/place R
+~~~
+
+And then, from the R shell:
+
+~~~
+library(devtools)
+install_github("molpopgen/buRden")
+~~~
+
 ##Documentation
 
 All documentation is provided via R's help system.  You may build the pdf of the package manual using the following command:
