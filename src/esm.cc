@@ -2,9 +2,33 @@
 #include <algorithm>
 #include <functional>
 #include <cmath>
+#include <numeric>
+
+#include <boost/accumulators/accumulators.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
+#include <boost/accumulators/statistics/tail.hpp>
 
 using namespace std;
-using namespace Rcpp;
+//using namespace Rcpp;
+using namespace boost::accumulators;
+
+namespace {
+  /*
+    Awaiting the days when CRAN will take cpp11...
+  */
+  struct __esm_accumulator {
+    mutable unsigned i,ntests;
+    __esm_accumulator(const unsigned & n) : i(0u),ntests(n) {}
+    typedef double result_type;
+    inline result_type operator()(const double & a, const double & b) const
+    {
+      double rv = a + (b - (-log10((i+1)/double(ntests))));
+      ++i;
+      return rv;
+    }
+  };
+}
+
 
 //' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
 //' @param scores A vector of single-marker association test scores, on a -log10 scale
@@ -19,19 +43,17 @@ using namespace Rcpp;
 //' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
 //' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
 // [[Rcpp::export]]
-double esm( const NumericVector & scores, const unsigned & K )
+double esm( const Rcpp::NumericVector & scores, const unsigned & K )
 {
-  NumericVector s(scores);
-
-  sort(s.begin(),s.end(),greater<double>());
-
+  typedef tag::tail_variate< int, tag::covariate1, boost::accumulators::left > my_tail_variate_tag;
   unsigned ntests = scores.size();
-  unsigned nm = min(K,unsigned(scores.size()));
-
-  double rv=0;
-  for( unsigned i = 0 ; i < nm ; ++i )
+  accumulator_set<double, stats<tag::tail<boost::accumulators::right> > > acc(tag::tail<boost::accumulators::right>::cache_size =std::min(K,ntests));
+  for( Rcpp::NumericVector::const_iterator itr = scores.begin() ; 
+       itr != scores.end() ; ++itr )
     {
-      rv += (s[i] - ( -log10( double(i+1)/double(ntests) ) ) );
+      acc(*itr);
     }
+  __esm_accumulator b(ntests);
+  double rv = accumulate(tail(acc).begin(),tail(acc).end(),0.,b);
   return rv;
 }
