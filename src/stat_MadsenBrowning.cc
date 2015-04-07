@@ -111,14 +111,14 @@ Rcpp::List stat_MadsenBrowning::values()
     {
       if( status[i] == 1 )//case
       {
-	vector<double>::const_iterator itr = find(scores_sorted.begin(),scores_sorted.end(),scores[i]);
+	vector<double>::const_iterator itr = lower_bound(scores_sorted.begin(),scores_sorted.end(),scores[i]);
 	//NumericVector::const_iterator itr = find(scores_sorted.begin(),scores_sorted.end(),scores[i]);
 	stat += double( itr - scores_sorted.begin() ) + 1.;   //This is the rank
 	
-	itr = find(scores_rec_sorted.begin(),scores_rec_sorted.end(),scores_rec[i]);
+	itr = lower_bound(scores_rec_sorted.begin(),scores_rec_sorted.end(),scores_rec[i]);
 	stat_rec += double( itr - scores_rec_sorted.begin() ) + 1.;   //This is the rank
 	
-	itr = find(scores_dom_sorted.begin(),scores_dom_sorted.end(),scores_dom[i]);
+	itr = lower_bound(scores_dom_sorted.begin(),scores_dom_sorted.end(),scores_dom[i]);
 	stat_dom += double( itr - scores_dom_sorted.begin() ) + 1.;   //This is the rank
       }
     }
