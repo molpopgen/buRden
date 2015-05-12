@@ -39,10 +39,12 @@ namespace {
     mutable unsigned i,ntests;
     __esmw_accumulator(const unsigned & n) : i(0u),ntests(n) {}
     typedef double result_type;
-    inline result_type operator()(const double & a, const boost::tuple<const double &, const double & > & b) const
+    //tuple type must match what is used below--doubles, not references to doubles.
+    inline result_type operator()(const double & a, const boost::tuple<double,double> & b) const
+    //inline result_type operator()(const double & a, const boost::tuple<const double &, const double & > & b) const
     {
-      
-      double rv = a + (get<0>(b) + log10((i+1)/double(ntests)))*get<1>(b);
+      double rv = a + (b.get<0>() + log10((i+1)/double(ntests)))*b.get<1>();
+      //double rv = a + (get<0>(b) + log10((i+1)/double(ntests)))*get<1>(b);
       ++i;
       return rv;
     }
