@@ -68,18 +68,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// chisq_per_marker
-NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
-RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP);
-    __result = Rcpp::wrap(chisq_per_marker(ccdata, ccstatus));
-    return __result;
-END_RCPP
-}
 // chisq
 double chisq(const unsigned& a, const unsigned& b, const unsigned& c, const unsigned& d, const bool& yates);
 RcppExport SEXP buRden_chisq(SEXP aSEXP, SEXP bSEXP, SEXP cSEXP, SEXP dSEXP, SEXP yatesSEXP) {
@@ -92,6 +80,43 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const unsigned& >::type d(dSEXP);
     Rcpp::traits::input_parameter< const bool& >::type yates(yatesSEXP);
     __result = Rcpp::wrap(chisq(a, b, c, d, yates));
+    return __result;
+END_RCPP
+}
+// chisq_per_marker
+NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
+RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP);
+    Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP);
+    __result = Rcpp::wrap(chisq_per_marker(ccdata, ccstatus));
+    return __result;
+END_RCPP
+}
+// esm
+double esm(const Rcpp::NumericVector& scores, const unsigned& K);
+RcppExport SEXP buRden_esm(SEXP scoresSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type scores(scoresSEXP);
+    Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP);
+    __result = Rcpp::wrap(esm(scores, K));
+    return __result;
+END_RCPP
+}
+// esmw
+double esmw(const Rcpp::NumericVector& scores, const Rcpp::NumericVector& weights, const unsigned& K);
+RcppExport SEXP buRden_esmw(SEXP scoresSEXP, SEXP weightsSEXP, SEXP KSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type scores(scoresSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP);
+    __result = Rcpp::wrap(esmw(scores, weights, K));
     return __result;
 END_RCPP
 }
@@ -119,31 +144,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP);
     Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP);
     __result = Rcpp::wrap(esm_perm_binary(ccdata, ccstatus, nperms, k));
-    return __result;
-END_RCPP
-}
-// esm
-double esm(const Rcpp::NumericVector& scores, const unsigned& K);
-RcppExport SEXP buRden_esm(SEXP scoresSEXP, SEXP KSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type scores(scoresSEXP);
-    Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP);
-    __result = Rcpp::wrap(esm(scores, K));
-    return __result;
-END_RCPP
-}
-// esmw
-double esmw(const Rcpp::NumericVector& scores, const Rcpp::NumericVector& weights, const unsigned& K);
-RcppExport SEXP buRden_esmw(SEXP scoresSEXP, SEXP weightsSEXP, SEXP KSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type scores(scoresSEXP);
-    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type weights(weightsSEXP);
-    Rcpp::traits::input_parameter< const unsigned& >::type K(KSEXP);
-    __result = Rcpp::wrap(esmw(scores, weights, K));
     return __result;
 END_RCPP
 }

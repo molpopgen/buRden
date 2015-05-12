@@ -87,6 +87,18 @@ cAlpha_perm <- function(ccdata, ccstatus, nperms, simplecounts = FALSE) {
     .Call('buRden_cAlpha_perm', PACKAGE = 'buRden', ccdata, ccstatus, nperms, simplecounts)
 }
 
+#' Chi-squared statistic for a 2x2 table
+#' @param a An observation
+#' @param b An observation
+#' @param c An observation
+#' @param d An observation
+#' @param yates Apply continuity correction?
+#' @return The equivalent of chisq.test( matrix(c(a,b,c,d),nrow=2,byrow=T),correct=yates )$statistic
+#' @details Calculated internally on a log10 scale.
+chisq <- function(a, b, c, d, yates) {
+    .Call('buRden_chisq', PACKAGE = 'buRden', a, b, c, d, yates)
+}
+
 #' Single-marker association test based on the chi-squared statistic
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
@@ -101,16 +113,42 @@ chisq_per_marker <- function(ccdata, ccstatus) {
     .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
 }
 
-#' Chi-squared statistic for a 2x2 table
-#' @param a An observation
-#' @param b An observation
-#' @param c An observation
-#' @param d An observation
-#' @param yates Apply continuity correction?
-#' @return The equivalent of chisq.test( matrix(c(a,b,c,d),nrow=2,byrow=T),correct=yates )$statistic
-#' @details Calculated internally on a log10 scale.
-chisq <- function(a, b, c, d, yates) {
-    .Call('buRden_chisq', PACKAGE = 'buRden', a, b, c, d, yates)
+#' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
+#' @param scores A vector of single-marker association test scores, on a -log10 scale
+#' @param K the number of markers used to calculate ESM_K
+#' @return The ESM_K test statistic value
+#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
+#' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
+esm <- function(scores, K) {
+    .Call('buRden_esm', PACKAGE = 'buRden', scores, K)
+}
+
+#' weighted verstion of Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
+#' @param scores A vector of single-marker association test scores, on a -log10 scale
+#' @param weights A vector of weights to use for each marker, such as dbetat(MAF,1,25)
+#' @param K the number of markers used to calculate ESM_K
+#' @return The ESM_K test statistic value
+#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
+#' @examples
+#' data(rec.ccdata)
+#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
+#' #filter out common alleles and marker pairs in high LD
+#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
+#' MAF = colSums(rec.ccdata$genos[,which(keep==1)])/(2*nrow(rec.ccdata$genos))
+#' b.weight = dbeta(MAF,1,25)
+#' lin.weight = rep(1,length(MAF))
+#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
+#' rec.ccdata.esm = esm( rec.ccdata.chisq,50 )
+#' rec.ccdata.esm.lin =  esmw( rec.ccdata.chisq,lin.weight, 50 )
+#' rec.ccdata.esm.beta = esmw( rec.ccdata.chisq,b.weight, 50 )
+esmw <- function(scores, weights, K) {
+    .Call('buRden_esmw', PACKAGE = 'buRden', scores, weights, K)
 }
 
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
@@ -146,44 +184,6 @@ esm_chisq <- function(ccdata, ccstatus, k) {
 #' rec.ccdata.esm.permdist = esm_perm_binary(rec.ccdata$genos[,which(keep==1)],status,100,50)
 esm_perm_binary <- function(ccdata, ccstatus, nperms, k) {
     .Call('buRden_esm_perm_binary', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k)
-}
-
-#' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
-#' @param scores A vector of single-marker association test scores, on a -log10 scale
-#' @param K the number of markers used to calculate ESM_K
-#' @return The ESM_K test statistic value
-#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
-#' @examples
-#' data(rec.ccdata)
-#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
-#' #filter out common alleles and marker pairs in high LD
-#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
-#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
-#' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
-esm <- function(scores, K) {
-    .Call('buRden_esm', PACKAGE = 'buRden', scores, K)
-}
-
-#' weighted verstion of Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
-#' @param scores A vector of single-marker association test scores, on a -log10 scale
-#' @param weights A vector of weights to use for each marker, such as dbetat(MAF,1,25)
-#' @param K the number of markers used to calculate ESM_K
-#' @return The ESM_K test statistic value
-#' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
-#' @examples
-#' data(rec.ccdata)
-#' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
-#' #filter out common alleles and marker pairs in high LD
-#' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
-#' MAF = colSums(ccdata$genos[,which(keep==1)])/(2*nrow(ccdata$genos))
-#' b.weight = dbeta(MAF,1,25)
-#' lin.weight = rep(1,length(MAF))
-#' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
-#' rec.ccdata.esm = esm( rec.ccdata.chisq,50 )
-#' rec.ccdata.esm.lin =  esmw( rec.ccdata.chisq,lin.weight, 50 )
-#' rec.ccdata.esm.beta = esmw( rec.ccdata.chisq,b.weight, 50 )
-esmw <- function(scores, weights, K) {
-    .Call('buRden_esmw', PACKAGE = 'buRden', scores, weights, K)
 }
 
 #' Apply frequency and LD filters to a genotype matrix
