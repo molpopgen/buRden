@@ -28,9 +28,9 @@ stat_MadsenBrowning::stat_MadsenBrowning( const unsigned & __nrows,
 
 void stat_MadsenBrowning::update() 
 {
-  double qi = double(minor_count + 1)/(2.*double(ncontrols)+2.),
-    qi_rec = double(rec_count + 1)/(2.*double(ncontrols)+2.),
-    qi_dom = double(dom_count + 1)/(2.*double(ncontrols)+2.);
+  double qi = double(minor_count + 1)/(2.*double(ncontrols)+2.);
+  //    qi_rec = double(rec_count + 1)/(2.*double(ncontrols)+2.),
+  //    qi_dom = double(dom_count + 1)/(2.*double(ncontrols)+2.);
 
   /*
     Note: in moving from std::transform to simply dividing within the loop, I
@@ -43,15 +43,15 @@ void stat_MadsenBrowning::update()
   // transform( scores_dom_site.begin(),scores_dom_site.begin(),scores_dom_site.begin(),
   // 	     bind2nd( divides<double>(), sqrt(double(scores_dom_site.size())*qi_dom*(1.-qi_dom))) );
 
-  double w1 = sqrt(double(scores_site.size())*qi*(1.-qi)),
-    w2 = sqrt(double(scores_rec_site.size())*qi_rec*(1.-qi_rec)),
-    w3 = sqrt(double(scores_dom_site.size())*qi_dom*(1.-qi_dom));
+  double wi = sqrt(double(scores_site.size())*qi*(1.-qi));
+  //w2 = sqrt(double(scores_rec_site.size())*qi_rec*(1.-qi_rec)),
+  //w3 = sqrt(double(scores_dom_site.size())*qi_dom*(1.-qi_dom));
   for( unsigned i = 0 ; i < scores.size() ; ++i )
     {
       //Update total scores
-      scores[i]+=scores_site[i]/w1;
-      scores_rec[i]+=scores_rec_site[i]/w2;
-      scores_dom[i]+=scores_dom_site[i]/w3;
+      scores[i]+=scores_site[i]/wi;
+      scores_rec[i]+=scores_rec_site[i]/wi;
+      scores_dom[i]+=scores_dom_site[i]/wi;
 
       //reset variables
       scores_site[i]=scores_rec_site[i]=scores_dom_site[i]=0.;
