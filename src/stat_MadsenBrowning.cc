@@ -11,12 +11,9 @@ stat_MadsenBrowning::stat_MadsenBrowning( const unsigned & __nrows,
 					  const unsigned & __ncontrols,
 					  const Rcpp::IntegerVector * __ccstatus ) : ncontrols(__ncontrols),
 										     minor_count(0),
-										     rec_count(0),
-										     dom_count(0),
 										     ind(0),
 										     //Note: not a copy, allocation, nothing!!!!
 										     status(__ccstatus),
-										     
 										     scores(vector<double>(__nrows,0.)),
 										     scores_rec(vector<double>(__nrows,0.)),
 										     scores_dom(vector<double>(__nrows,0.)),
@@ -56,7 +53,7 @@ void stat_MadsenBrowning::update()
       //reset variables
       scores_site[i]=scores_rec_site[i]=scores_dom_site[i]=0.;
     }
-  minor_count = rec_count = dom_count = ind = 0;
+  minor_count = ind = 0;
 }
 
 void stat_MadsenBrowning::operator()(const int & genotype,
@@ -96,7 +93,7 @@ void stat_MadsenBrowning::operator()(const int & genotype,
       if(!ccstatus)
       	{
       	  minor_count+=1;
-      	  dom_count += 1;
+      	  //dom_count += 1;
       	}
       break;
     case 2:
@@ -106,8 +103,8 @@ void stat_MadsenBrowning::operator()(const int & genotype,
       if(!ccstatus)
       	{
       	  minor_count += 2;
-      	  dom_count += 1;
-      	  rec_count += 1;
+      	  //dom_count += 1;
+      	  //rec_count += 1;
 	}
       break;
     default:

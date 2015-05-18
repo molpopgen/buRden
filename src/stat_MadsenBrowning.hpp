@@ -6,7 +6,7 @@
 class stat_MadsenBrowning : public stat_base
 {
 private:
-  unsigned ncontrols,minor_count,rec_count,dom_count,ind;
+  unsigned ncontrols,minor_count,ind;
   const Rcpp::IntegerVector * status;
   std::vector<double> scores,scores_rec,scores_dom,scores_site,scores_rec_site,scores_dom_site;
 public:
