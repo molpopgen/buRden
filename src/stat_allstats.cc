@@ -14,7 +14,7 @@ stat_allstats::stat_allstats( const unsigned & nrows,
 			      const bool & normalize_calpha,
 			      const bool & simplecounts_calpha ) : __chisq(),
 								   __calpha(ccstatus,normalize_calpha,simplecounts_calpha),
-								   __MB(nrows,count(ccstatus.begin(),ccstatus.end(),1),ccstatus),
+								   __MB(nrows,count(ccstatus.begin(),ccstatus.end(),1),&ccstatus),
 								   __LLc(LLc_maf,ccstatus,LLc_maf_control),
 								   esmK(esm_k_value)
 {

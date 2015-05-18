@@ -54,7 +54,7 @@ NumericVector MBweights(const IntegerMatrix & ccdata,
 Rcpp::List MBstat( const IntegerMatrix & ccdata,
 		   const IntegerVector & ccstatus )
 {
-  stat_MadsenBrowning mb(ccdata.nrow(),count(ccstatus.begin(),ccstatus.end(),0),ccstatus);
+  stat_MadsenBrowning mb(ccdata.nrow(),count(ccstatus.begin(),ccstatus.end(),0),&ccstatus);
   List rv = stat_calculator(ccdata,ccstatus,mb);
   return rv;
 }
