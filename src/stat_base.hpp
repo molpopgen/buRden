@@ -5,7 +5,7 @@
 
 /*
   Virtual base class for how to calculate a statistic.
-  Tee stat_calculator.cc to make this make a lot more sense.
+  See stat_calculator.cc to make this make a lot more sense.
  */
 class stat_base
 {
