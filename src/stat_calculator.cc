@@ -6,14 +6,26 @@ List stat_calculator(const IntegerMatrix & data,
 		     const IntegerVector & status,
 		     stat_base & f)
 {
-  for( unsigned site = 0 ; site < data.ncol() ; ++site )
+  IntegerMatrix::const_iterator itr = data.begin(),end=data.end();
+  unsigned nr = data.nrow();
+  while(itr!=end)
     {
-      for( unsigned ind = 0 ; ind < data.nrow() ; ++ind )
+      unsigned i=0;
+      while(i<nr)
 	{
-	  f( data(ind,site), status[ind] );
+	  f( *itr, status[i] );
+	  ++itr;
+	  ++i;
 	}
       f.update();
     }
+  // for( unsigned site = 0 ; site < data.ncol() ; ++site )
+  //   {
+  //     for( unsigned ind = 0 ; ind < data.nrow() ; ++ind )
+  // 	{
+  // 	  f( data(ind,site), status[ind] );
+  // 	}
+  //     f.update();
+  //   }
   return f.values();
 }
-		     
