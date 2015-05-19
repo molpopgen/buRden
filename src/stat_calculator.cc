@@ -7,15 +7,13 @@ List stat_calculator(const IntegerMatrix & data,
 		     stat_base & f)
 {
   IntegerMatrix::const_iterator itr = data.begin(),end=data.end();
-  unsigned nr = data.nrow();
+  const unsigned nr = data.nrow();
   while(itr!=end)
     {
       unsigned i=0;
       while(i<nr)
 	{
-	  f( *itr, status[i] );
-	  ++itr;
-	  ++i;
+	  f( *itr++, status[i++] );
 	}
       f.update();
     }
