@@ -3,6 +3,7 @@
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
 #' @param k Number of markers to use for ESM_K statistic
+#' @param yates Logical -- apply Yates' correction to chi-squared statistic?
 #' @return The test statistic, Monte-carlo estimate of P(perm stat >= observed data), and a Z-score based on the permutation distribution.
 #' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
@@ -11,10 +12,10 @@
 #' #Filter sites: 0 <= MAF in cases < 0.05 && r^2 between pairs < 0.8
 #' keep = filter_sites(rec.ccdata$genos,rec.ccdata.status,0,5e-2,0.8)
 #' rec.ccdata.esm.p = esm.p.perm( rec.ccdata$genos[,which(keep==1)], rec.ccdata.status, 10, 50 )
-esm.p.perm = function( ccdata, ccstatus, nperms, k )
+esm.p.perm = function( ccdata, ccstatus, nperms, k, yates = TRUE )
   {
-    stat = esm_chisq(ccdata,ccstatus,k)
-    perms = esm_perm_binary(ccdata,ccstatus,nperms,k)
+    stat = esm_chisq(ccdata,ccstatus,k,yates)
+    perms = esm_perm_binary(ccdata,ccstatus,nperms,k,yates)
     return( list("statistic" = stat,
                  "p.value" = length( which( perms  >= stat) )/nperms,
                  "z" = ( stat - mean(perms) )/sd(perms) )
@@ -94,6 +95,7 @@ MB.p.perm = function(ccdata, ccstatus, nperms )
 #' of the mutation.  In other wordes, simplecounts = FALSE is equivalent to colSums( ccdata[status==1,] ).  When simplecounts=TRUE,
 #' all nonzero genotype values are treated as the value 1, equivalent to  apply(data[status==1,], 2, function(x) sum(x>0, na.rm=TRUE)).
 #' The latter method is used by the R package AssotesteR.
+#' The ESM statistic is calculated with Yates' correction applied to the single-marker chi-squred values.
 #' @examples
 #' data(rec.ccdata)
 #' rec.ccdata.status = c( rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))

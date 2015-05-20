@@ -102,15 +102,15 @@ chisq <- function(a, b, c, d, yates) {
 #' Single-marker association test based on the chi-squared statistic
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
+#' @param yates Apply continuity correction?
 #' @return A vector of -log10(p-values) from a chi-squared test with one degree of freedom.  The chisq test is based on a 2x2 table of minor vs major allele counts in cases vs. controls.
-#' @details The chi-squared values have Yate's continuity correction applied
 #' @examples
 #' data(rec.ccdata)
 #' status = c(rep(0,rec.ccdata$ncontrols),rep(1,rec.ccdata$ncases))
 #' #Note that the result should be very very similar to logistic regression under additive model...
 #' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos, status)
-chisq_per_marker <- function(ccdata, ccstatus) {
-    .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus)
+chisq_per_marker <- function(ccdata, ccstatus, yates) {
+    .Call('buRden_chisq_per_marker', PACKAGE = 'buRden', ccdata, ccstatus, yates)
 }
 
 #' Association stat from Thornton, Foran, and Long (2013) PLoS Genetics
@@ -155,6 +155,7 @@ esmw <- function(scores, weights, K) {
 #' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param k The number of markers for the ESM_K statistic.
+#' @param yates Logical -- apply Yates' correction to chi-squared statistic?
 #' @return The ESM_K test statistic value based on chi-squared tests per marker.
 #' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
@@ -163,8 +164,8 @@ esmw <- function(scores, weights, K) {
 #' #filter out common alleles and marker pairs in high LD
 #' keep = filter_sites(rec.ccdata$genos,status,0,0.05,0.8)
 #' rec.ccdata.chisq = esm_chisq( rec.ccdata$genos[,which(keep==1)], status, 50 )
-esm_chisq <- function(ccdata, ccstatus, k) {
-    .Call('buRden_esm_chisq', PACKAGE = 'buRden', ccdata, ccstatus, k)
+esm_chisq <- function(ccdata, ccstatus, k, yates = TRUE) {
+    .Call('buRden_esm_chisq', PACKAGE = 'buRden', ccdata, ccstatus, k, yates)
 }
 
 #' Obtain permutaion distribution of the ESM_K statistic for case/control data
@@ -172,6 +173,7 @@ esm_chisq <- function(ccdata, ccstatus, k) {
 #' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 #' @param nperms Number of permutations to perform
 #' @param k Number of markers to use for ESM_K statistic
+#' @param yates Logical -- apply Yates' correction to chi-squared statistic?
 #' @return A vector of the permuted test statistic values
 #' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 #' @examples
@@ -182,8 +184,8 @@ esm_chisq <- function(ccdata, ccstatus, k) {
 #' rec.ccdata.chisq = chisq_per_marker(rec.ccdata$genos[,which(keep==1)],status)
 #' rec.ccdata.esm = esm( rec.ccdata.chisq, 50 )
 #' rec.ccdata.esm.permdist = esm_perm_binary(rec.ccdata$genos[,which(keep==1)],status,100,50)
-esm_perm_binary <- function(ccdata, ccstatus, nperms, k) {
-    .Call('buRden_esm_perm_binary', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k)
+esm_perm_binary <- function(ccdata, ccstatus, nperms, k, yates = TRUE) {
+    .Call('buRden_esm_perm_binary', PACKAGE = 'buRden', ccdata, ccstatus, nperms, k, yates)
 }
 
 #' Apply frequency and LD filters to a genotype matrix
