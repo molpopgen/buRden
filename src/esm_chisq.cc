@@ -12,6 +12,7 @@ using namespace std;
 //' @param ccdata A matrix of markers (columns) and individuals (rows).  Data are coded as the number of copies of the minor allele.
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param k The number of markers for the ESM_K statistic.
+//' @param yates Logical -- apply Yates' correction to chi-squared statistic?
 //' @return The ESM_K test statistic value based on chi-squared tests per marker.
 //' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 //' @examples
@@ -23,9 +24,10 @@ using namespace std;
 // [[Rcpp::export]]
 double esm_chisq( const IntegerMatrix & ccdata,
 		  const IntegerVector & ccstatus,
-		  const unsigned & k)
+		  const unsigned & k,
+		  const bool & yates = true)
 {
-  NumericVector c = chisq_per_marker( ccdata, ccstatus );
+  NumericVector c = chisq_per_marker( ccdata, ccstatus, yates );
   double stat = esm(c,k);
   return( stat );
 }
@@ -35,6 +37,7 @@ double esm_chisq( const IntegerMatrix & ccdata,
 //' @param ccstatus A vector of binary phenotype labels.  0 = control, 1 = case.
 //' @param nperms Number of permutations to perform
 //' @param k Number of markers to use for ESM_K statistic
+//' @param yates Logical -- apply Yates' correction to chi-squared statistic?
 //' @return A vector of the permuted test statistic values
 //' @references Thornton, K. R., Foran, A. J., & Long, A. D. (2013). Properties and Modeling of GWAS when Complex Disease Risk Is Due to Non-Complementing, Deleterious Mutations in Genes of Large Effect. PLoS Genetics, 9(2), e1003258. doi:10.1371/journal.pgen.1003258
 //' @examples
@@ -49,7 +52,8 @@ double esm_chisq( const IntegerMatrix & ccdata,
 NumericVector esm_perm_binary( const IntegerMatrix & ccdata,
 			       const IntegerVector & ccstatus,
 			       const unsigned & nperms,
-			       const unsigned & k )
+			       const unsigned & k,
+			       const bool & yates = true)
 {
   NumericVector rv(nperms);
   RNGScope scope;
@@ -58,7 +62,7 @@ NumericVector esm_perm_binary( const IntegerMatrix & ccdata,
   for( unsigned i = 0 ; i < nperms ; ++i )
     {
       random_shuffle(status.begin(),status.end(),randWrapper);
-      NumericVector c = chisq_per_marker( ccdata, status );
+      NumericVector c = chisq_per_marker( ccdata, status, yates );
       rv[i] = esm(c,k);
     }
   return rv;

@@ -4,7 +4,8 @@
 #include <Rcpp.h>
 
 Rcpp::NumericVector chisq_per_marker( const Rcpp::IntegerMatrix & ccdata,
-				      const Rcpp::IntegerVector & ccstatus );
+				      const Rcpp::IntegerVector & ccstatus,
+				      const bool & yates = true);
 
 
 #endif

@@ -84,14 +84,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // chisq_per_marker
-NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus);
-RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP) {
+NumericVector chisq_per_marker(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const bool& yates);
+RcppExport SEXP buRden_chisq_per_marker(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP yatesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP);
-    __result = Rcpp::wrap(chisq_per_marker(ccdata, ccstatus));
+    Rcpp::traits::input_parameter< const bool& >::type yates(yatesSEXP);
+    __result = Rcpp::wrap(chisq_per_marker(ccdata, ccstatus, yates));
     return __result;
 END_RCPP
 }
@@ -121,21 +122,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // esm_chisq
-double esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k);
-RcppExport SEXP buRden_esm_chisq(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP kSEXP) {
+double esm_chisq(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& k, const bool& yates);
+RcppExport SEXP buRden_esm_chisq(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP kSEXP, SEXP yatesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const IntegerMatrix& >::type ccdata(ccdataSEXP);
     Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP);
     Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP);
-    __result = Rcpp::wrap(esm_chisq(ccdata, ccstatus, k));
+    Rcpp::traits::input_parameter< const bool& >::type yates(yatesSEXP);
+    __result = Rcpp::wrap(esm_chisq(ccdata, ccstatus, k, yates));
     return __result;
 END_RCPP
 }
 // esm_perm_binary
-NumericVector esm_perm_binary(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms, const unsigned& k);
-RcppExport SEXP buRden_esm_perm_binary(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP, SEXP kSEXP) {
+NumericVector esm_perm_binary(const IntegerMatrix& ccdata, const IntegerVector& ccstatus, const unsigned& nperms, const unsigned& k, const bool& yates);
+RcppExport SEXP buRden_esm_perm_binary(SEXP ccdataSEXP, SEXP ccstatusSEXP, SEXP npermsSEXP, SEXP kSEXP, SEXP yatesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -143,7 +145,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const IntegerVector& >::type ccstatus(ccstatusSEXP);
     Rcpp::traits::input_parameter< const unsigned& >::type nperms(npermsSEXP);
     Rcpp::traits::input_parameter< const unsigned& >::type k(kSEXP);
-    __result = Rcpp::wrap(esm_perm_binary(ccdata, ccstatus, nperms, k));
+    Rcpp::traits::input_parameter< const bool& >::type yates(yatesSEXP);
+    __result = Rcpp::wrap(esm_perm_binary(ccdata, ccstatus, nperms, k, yates));
     return __result;
 END_RCPP
 }

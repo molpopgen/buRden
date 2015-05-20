@@ -5,7 +5,7 @@
 using namespace Rcpp;
 using namespace std;
 
-stat_chisq::stat_chisq() : stat_base(),csqs( NumericVector() )
+stat_chisq::stat_chisq(const bool & use_yates) : stat_base(),yates(use_yates),csqs( NumericVector() )
 {
   ctable[0]=ctable[1]=ctable[2]=ctable[3]=0;
 }
@@ -18,7 +18,7 @@ double stat_chisq::log10chisq()
   // double d = double(ctable[3]);
 
   //double rv = chisq(a,b,c,d,true);
-  double rv = chisq(ctable[0],ctable[2],ctable[1],ctable[3]);
+  double rv = chisq(ctable[0],ctable[2],ctable[1],ctable[3],yates);
   if (! isfinite(rv) )
     {
       //then the chisquared is 0, the p-value is 1, and -log10(1) = 0 

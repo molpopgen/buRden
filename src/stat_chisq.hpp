@@ -6,11 +6,12 @@
 class stat_chisq : public stat_base
 {
   private:
+  bool yates;
   double log10chisq();
   Rcpp::NumericVector csqs;
   unsigned ctable[4];
 public:
-  stat_chisq();
+  stat_chisq(const bool & use_yates = true);
   virtual void update();
   virtual void operator()(const int & genotype,
 			  const int & ccstatus);
